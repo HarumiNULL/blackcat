@@ -1,0 +1,6 @@
+﻿services:
+  blackcat:
+    image: blackcat
+    build:
+      context: .
+      dockerfile: blackcat/Dockerfile
