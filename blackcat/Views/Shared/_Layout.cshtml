@@ -8,36 +8,71 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/blackcat.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/icons/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-light bg-primary-custom border-bottom box-shadow ">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">blackcat</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            <!-- Logo -->
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/icons/black_cat_horizonta.png" alt="Black Cat" class="img-fluid" style="height: 60px"/>
+            </a>
+
+            <!-- Botón para colapsar en móvil -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+
+            <!-- Contenido del navbar -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Menú izquierdo -->
+                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Catalogo">Catálogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Foro" asp-action="Index">Foro</a>
                     </li>
                 </ul>
+
+                <!-- Buscador centrado -->
+                <div class="search-bar w-50">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-terciary-custom" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon">
+                        <button class="btn btn-outline-secondary bg-terciary-custom" type="button" id="search-addon">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Botones a la derecha -->
+                <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
+                    <button class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">
+                        <span class="">Registro</span>
+                    </button>
+                    <button class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-secondary-custom">
+                        <span class="">Inicio Sesion</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+<div class="container-bg pt-3">
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 </div>
 
-<footer class="border-top footer text-muted">
+
+<footer class="border-top footer text-muted bg-terciary-custom">
     <div class="container">
         &copy; 2025 - blackcat - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>

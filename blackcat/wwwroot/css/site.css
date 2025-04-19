@@ -29,3 +29,42 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+.bg-primary-custom {
+  background-color: #48ADBC;
+}
+.bg-secondary-custom {
+  background-color: #A1D7D0;
+}
+.bg-terciary-custom {
+  background-color: #DAE7F5;
+}
+.search-bar {
+  max-width: 500px;
+  margin: auto auto;
+}
+
+.search-bar .input-group {
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar .form-control {
+  border: none;
+  padding-left: 20px;
+}
+
+.search-bar .btn {
+  border: none;
+  padding: 10px 20px;
+}
+.container-bg {
+  background-image: url("../icons/FondoblackCat.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color:#DAE7F5;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 95vh;
+}

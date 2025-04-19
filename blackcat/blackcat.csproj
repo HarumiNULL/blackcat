@@ -18,6 +18,13 @@
       <Folder Include="Repositories\" />
       <Folder Include="Services\" />
       <Folder Include="Utilities\" />
+      <Folder Include="Views\Admin\" />
+      <Folder Include="Views\Error\" />
+      <Folder Include="Views\Foro\" />
+      <Folder Include="Views\Libros\" />
+      <Folder Include="Views\Moderador\" />
+      <Folder Include="Views\User\" />
+      <Folder Include="wwwroot\staticFiles\libros\" />
     </ItemGroup>
 
     <ItemGroup>
