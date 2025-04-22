@@ -52,13 +52,16 @@
 
                 <!-- Botones a la derecha -->
                 <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
-                    <button class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">
-                        <span class="">Registro</span>
-                    </button>
-                    <button class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-secondary-custom">
-                        <span class="">Inicio Sesion</span>
-                    </button>
+                    <a asp-controller="User" asp-action="Registro"
+                       class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">
+                        Registro
+                    </a>
+                    <a asp-controller="User" asp-action="InicioSesion"
+                       class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-secondary-custom">
+                        Inicio Sesión
+                    </a>
                 </div>
+
             </div>
         </div>
     </nav>

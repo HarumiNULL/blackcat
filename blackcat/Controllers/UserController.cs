@@ -9,4 +9,13 @@ public class UserController : Controller
     {
         return View();
     }
+    public IActionResult Registro()
+    {
+        return View();
+    }
+
+    public IActionResult InicioSesion()
+    {
+        return View();
+    }
 }
