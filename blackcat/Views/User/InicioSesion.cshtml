@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-99">
+    <div class="p-4 rounded-4" style="background-color: #a8d9d2; width: 80%; max-width: 480px;">
+        <div class="bg-white p-4 rounded-3 shadow-sm">
+            <h2 class="text-center mb-4" style="font-weight: bold;">Inicio de sesión </h2>
+
+            <form>
+                <div class="mb-3">
+                    <label for="nombreUsuario" class="form-label">Nombre Usuario</label>
+                    <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese nombre">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="contrasenia" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="contrasenia" placeholder="Ingrese contraseña">
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Iniciar Sesion</button>
+                </div>
+            </form>
+            <div class="text-center mt-3 position-relative">
+                <span>¿No tienes cuenta? </span><a href="/User/Registro" class="text-primary">Registrate</a>
+                <img src="~/icons/gato.ico" alt="gatito" style="width: 80px; position: absolute; bottom: -180%; right:-20%;">
+            </div>
+        </div>
+
+    </div>
+</div>
+
