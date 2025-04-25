@@ -13,20 +13,20 @@
         <div class="bg-white p-4 rounded-3 shadow-sm">
             <h2 class="text-center mb-4" style="font-weight: bold;">Registro</h2>
 
-            <form>
+            <form method="post" action="/User/Registro">
                 <div class="mb-3">
-                    <label for="nombreUsuario" class="form-label">Nombre Usuario</label>
-                    <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese nombre">
+                    <label  class="form-label">Nombre Usuario</label>
+                    <input type="text" class="form-control" name="NombreU" placeholder="Ingrese nombre">
                 </div>
 
                 <div class="mb-3">
-                    <label for="correo" class="form-label">Correo</label>
-                    <input type="email" class="form-control" id="correo" placeholder="Ingrese correo">
+                    <label  class="form-label">Correo</label>
+                    <input type="email" class="form-control" name="CorreoU" placeholder="Ingrese correo">
                 </div>
 
                 <div class="mb-3">
-                    <label for="contrasenia" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="contrasenia" placeholder="Ingrese contraseña">
+                    <label  class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" name="Cont" placeholder="Ingrese contraseña">
                 </div>
 
                 <div class="d-grid gap-2">
