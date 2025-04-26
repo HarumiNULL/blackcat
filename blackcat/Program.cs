@@ -8,29 +8,41 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IAuthService, RegistroU>();
+builder.Services.AddScoped<UserServices>();
+builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddDbContext<BlackcatDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("gato"));
 });
 
-// hasheo de contraseñas
-builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
+// ⚡ Agrega la sesión
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Opcional: expira tras 30 minutos de inactividad
+    options.Cookie.HttpOnly = true; // Seguridad extra
+    options.Cookie.IsEssential = true; // Necesario para GDPR
+});
 
 var app = builder.Build();
+
+// ❌ Elimina esta línea, NO se puede usar Context aquí:
+// var nombreUsuario = Context.Session.GetString("NombreU");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) 
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+// ⚡ Habilita la sesión aquí
+app.UseSession();
 
 app.UseAuthorization();
 
@@ -40,6 +52,5 @@ app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

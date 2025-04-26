@@ -1,0 +1,13 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    
+    ViewData["Title"] = "Pagina Principal";
+    var nombreUsuario = Context.Session.GetString("NombreU");
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Usuario Registrado</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">Prueba</a>.</p>
+</div>
