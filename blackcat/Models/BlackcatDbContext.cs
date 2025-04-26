@@ -119,6 +119,14 @@ public partial class BlackcatDbContext : DbContext
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("autor");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(1000)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.Imagen)
+                .HasMaxLength(1000)
+                .IsUnicode(false)
+                .HasColumnName("imagen");
             entity.Property(e => e.NombreL)
                 .HasMaxLength(100)
                 .IsUnicode(false)

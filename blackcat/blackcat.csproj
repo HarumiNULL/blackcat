@@ -14,9 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Dtos\" />
-      <Folder Include="Repositories\" />
-      <Folder Include="Services\" />
       <Folder Include="Utilities\" />
       <Folder Include="Views\Admin\" />
       <Folder Include="Views\Error\" />
@@ -24,6 +21,7 @@
       <Folder Include="Views\Libros\" />
       <Folder Include="Views\Moderador\" />
       <Folder Include="Views\User\" />
+      <Folder Include="wwwroot\staticFiles\images\" />
       <Folder Include="wwwroot\staticFiles\libros\" />
     </ItemGroup>
 

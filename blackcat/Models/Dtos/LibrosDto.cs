@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace blackcat.Models.Dtos;
 
-namespace blackcat.Models;
-
-public partial class Libro
+public class LibrosDto
 {
     public int IdL { get; set; }
 
@@ -20,4 +17,6 @@ public partial class Libro
     public virtual ICollection<Busquedum> Busqueda { get; set; } = new List<Busquedum>();
 
     public virtual ICollection<ListaU> ListaUs { get; set; } = new List<ListaU>();
+    
+    public byte[] ? Foto { get; set; }
 }
