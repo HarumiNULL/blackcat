@@ -1,4 +1,5 @@
-﻿@{
+﻿@model blackcat.Models.Usuario
+@{
     ViewBag.Title = "";
     Layout = "_Layout";
 }
@@ -6,32 +7,37 @@
 <div class="d-flex justify-content-center align-items-center vh-99">
     <div class="p-4 rounded-4" style="background-color: #a8d9d2; width: 80%; max-width: 480px;">
         <div class="bg-white p-4 rounded-3 shadow-sm">
-            <h2 class="text-center mb-4" style="font-weight: bold;">Inicio de sesión </h2>
+            <h2 class="text-center mb-4" style="font-weight: bold;">Inicio de sesión</h2>
 
-            <form>
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+
+            <form method="post" asp-action="InicioSesion">
                 <div class="mb-3">
-                    <label for="nombreUsuario" class="form-label">Nombre Usuario</label>
-                    <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingrese nombre">
+                    <label for="NombreU" class="form-label">Nombre de Usuario</label>
+                    <input type="text" name="NombreU" class="form-control" id="NombreU" placeholder="Ingrese su  Usuario" required />
                 </div>
-                
+
                 <div class="mb-3">
-                    <label for="contrasenia" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="contrasenia" placeholder="Ingrese contraseña">
+                    <label for="Cont" class="form-label">Contraseña</label>
+                    <input type="password" name="Cont" class="form-control" id="Cont" placeholder="Ingrese su contraseña" required />
                 </div>
-                
+
                 <div class="text-center mt-3 position-relative mb-3">
-                    <span>¿olvidaste tu contraseña? </span><a href="/User/Registro" class="text-primary">click aqui</a>
+                    <span>¿Olvidaste tu contraseña? </span><a href="/User/Registro" class="text-primary">Haz clic aquí</a>
                 </div>
+
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Iniciar Sesion</button>
+                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Iniciar Sesión</button>
                 </div>
             </form>
+
             <div class="text-center mt-3 position-relative">
-                <span>¿No tienes cuenta? </span><a href="/User/Registro" class="text-primary">Registrate</a>
+                <span>¿No tienes cuenta? </span><a href="/User/Registro" class="text-primary">Regístrate</a>
                 <img src="~/icons/gato.ico" alt="gatito" style="width: 80px; position: absolute; bottom: -180%; right:-20%;">
             </div>
         </div>
-
     </div>
-</div>65
-
+</div>
