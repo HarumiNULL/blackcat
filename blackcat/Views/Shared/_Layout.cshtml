@@ -50,17 +50,31 @@
                     </div>
                 </div>
 
-                <!-- Botones a la derecha -->
+                <!-- Botones a la derecha dinámicos -->
                 <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
-                    <a asp-controller="User" asp-action="Registro"
-                       class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">
-                        Registro
-                    </a>
-                    <a asp-controller="User" asp-action="InicioSesion"
-                       class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-secondary-custom">
-                        Inicio Sesión
-                    </a>
+                    @if (Context.Session.GetString("NombreU") == null)
+                    {
+                        <!-- Si NO está logueado -->
+                        <a asp-controller="User" asp-action="Registro"
+                           class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">
+                            Registro
+                        </a>
+                        <a asp-controller="User" asp-action="InicioSesion"
+                           class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-secondary-custom">
+                            Inicio Sesión
+                        </a>
+                    }
+                    else
+                    {
+                        <!-- Si está logueado -->
+                        <form asp-controller="User" asp-action="CerrarSesion" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-danger text-white">
+                                Cerrar Sesión
+                            </button>
+                        </form>
+                    }
                 </div>
+
 
             </div>
         </div>

@@ -49,6 +49,14 @@ namespace blackcat.Controllers
             // Aquí puedes guardar info en sesión, cookie, etc.
             return RedirectToAction("ViewUser", "Home");
         }
+        
+        [HttpPost]
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
 
     }
 }

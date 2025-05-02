@@ -1,5 +1,7 @@
 using blackcat.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+
 using BCrypt.Net;
 
 namespace blackcat.Services
@@ -44,5 +46,6 @@ namespace blackcat.Services
             bool contrasenaValida = BCrypt.Net.BCrypt.Verify(contra, usuario.Cont);
             return contrasenaValida ? usuario : null;
         }
+        
     }
 }
