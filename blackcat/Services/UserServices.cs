@@ -39,7 +39,7 @@ namespace blackcat.Services
 
         public async Task<Usuario?> IniciarSesionAsync(string nombre, string contra)
         {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreU == nombre);
+            var usuario = await _context.Usuarios.Include(u => u.IdRolNavigation).FirstOrDefaultAsync(u => u.NombreU == nombre);
             if (usuario == null)
                 return null;
 

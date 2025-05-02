@@ -12,10 +12,7 @@ builder.Services.AddScoped<UserServices>();
 builder.Services.AddHttpContextAccessor();
 
 
-builder.Services.AddDbContext<BlackcatDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("gato"));
-});
+builder.Services.AddDbContext<BlackcatDbContext>();
 
 // ⚡ Agrega la sesión
 builder.Services.AddSession(options =>
@@ -27,8 +24,12 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// ❌ Elimina esta línea, NO se puede usar Context aquí:
-// var nombreUsuario = Context.Session.GetString("NombreU");
+using (var scope = app.Services.CreateScope())
+{
+    BlackcatDbContext context = scope.ServiceProvider.GetRequiredService<BlackcatDbContext>();
+    context.Database.EnsureCreated();
+    DbInitializer.Seed(context);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) 

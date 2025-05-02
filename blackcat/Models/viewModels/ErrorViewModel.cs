@@ -1,4 +1,4 @@
-namespace blackcat.Models;
+namespace blackcat.Models.viewModels;
 
 public class ErrorViewModel
 {
