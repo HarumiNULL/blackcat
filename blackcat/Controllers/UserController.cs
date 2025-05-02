@@ -33,7 +33,10 @@ namespace blackcat.Controllers
         {
             return View();
         }
-        
+        public IActionResult ViewUser()
+        {
+            return View();
+        }
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> InicioSesion(Usuario usuario)
@@ -45,7 +48,22 @@ namespace blackcat.Controllers
                 ViewBag.Error = "Correo o contraseña incorrectos.";
                 return View();
             }
-
+            
+            string rol = user.IdRolNavigation?.Nombre ?? "";
+            
+            switch (rol)
+            {
+                case "Administrador":
+                    return RedirectToAction("PagAdmin", "Admin");
+                case "Moderador":
+                    return RedirectToAction("PagMode", "Moderator");
+                case "Publico":
+                    return RedirectToAction("ViewUser", "User");
+                default:
+                    ViewBag.Error = "Rol no reconocido.";
+                    return View();
+            }
+            
             // Aquí puedes guardar info en sesión, cookie, etc.
             return RedirectToAction("ViewUser", "Home");
         }

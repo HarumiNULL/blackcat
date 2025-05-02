@@ -25,3 +25,4 @@ public partial class Usuario
 
     public virtual ICollection<ListaU> ListaUs { get; set; } = new List<ListaU>();
 }
+

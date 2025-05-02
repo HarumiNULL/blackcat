@@ -5,8 +5,9 @@ namespace blackcat.Controllers;
 public class AdminController : Controller
 {
     // GET
-    public IActionResult Index()
+    public IActionResult PagAdmin()
     {
         return View();
     }
+
 }

@@ -14,25 +14,17 @@
     </ItemGroup>
 
     <ItemGroup>
-<<<<<<< HEAD
-=======
+
       <Folder Include="Dtos\" />
-      <Folder Include="Repositories\" />
->>>>>>> origin/revision
+      <Folder Include="Repositories\"/>
       <Folder Include="Utilities\" />
-      <Folder Include="Views\Admin\" />
       <Folder Include="Views\Error\" />
       <Folder Include="Views\Foro\" />
       <Folder Include="Views\Libros\" />
-      <Folder Include="Views\Moderador\" />
-<<<<<<< HEAD
-      <Folder Include="Views\User\" />
       <Folder Include="wwwroot\staticFiles\images\" />
-=======
->>>>>>> origin/revision
       <Folder Include="wwwroot\staticFiles\libros\" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
       <Folder Include="Dtos\" />
