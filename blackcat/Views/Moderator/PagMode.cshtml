@@ -3,7 +3,8 @@
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
-    <h2 class="mb-4">BIENVENIDO ADMINISTRADOR</h2>
+
+<h2>Bienvenido Moderador</h2>
 
 <div class="row mt-5 align-items-start">
     <!-- Columna izquierda: Botones verticales -->
@@ -11,33 +12,24 @@
         <!-- Botón 1 -->
         <div class="dropdown">
             <button class="bg-secondary-custom dropdown-toggle btn-opciones-grande" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
-                Gestión de Usuarios
+                Reglamento
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a class="dropdown-item" href="@Url.Action("ViewRegmod","Admin")">Registro Moderadores</a></li>
-                <li><a class="dropdown-item" href="#">Modificación de Usuario</a></li>
+                <li><a class="dropdown-item" href="#">Redactar reglas</a></li>
+                <li><a class="dropdown-item" href="#">Ver reglas</a></li>
+                <li><a class="dropdown-item" href="#">Eliminar reglas</a></li>
             </ul>
         </div>
 
         <!-- Botón 2 -->
         <div class="dropdown">
             <button class="bg-secondary-custom dropdown-toggle btn-opciones-grande" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                Gestión de Libros
+                Gestión de Anuncios
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <li><a class="dropdown-item" href="#">Agregar Libro</a></li>
-                <li><a class="dropdown-item" href="#">Editar Libro</a></li>
-            </ul>
-        </div>
-
-        <!-- Botón 3 -->
-        <div class="dropdown">
-            <button class="bg-secondary-custom dropdown-toggle btn-opciones-grande" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false">
-                Reportes
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                <li><a class="dropdown-item" href="#">Reporte búsquedas de libros</a></li>
-                <li><a class="dropdown-item" href="#">Reporte libros disponibles</a></li>
+                <li><a class="dropdown-item" href="#">Agregar Anuncio</a></li>
+                <li><a class="dropdown-item" href="#">Ver anuncios</a></li>
+                <li><a class="dropdown-item" href="#">Eliminar anuncios</a></li>
             </ul>
         </div>
     </div>
@@ -65,7 +57,4 @@
             </div>
         </div>
     </div>
-
 </div>
-
-

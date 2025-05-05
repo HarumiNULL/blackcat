@@ -5,7 +5,7 @@ namespace blackcat.Controllers;
 public class ModeratorController : Controller
 {
     // GET
-    public IActionResult Index()
+    public IActionResult PagMode()
     {
         return View();
     }

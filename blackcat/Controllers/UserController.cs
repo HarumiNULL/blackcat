@@ -29,7 +29,7 @@ namespace blackcat.Controllers
             return View();
         }
 
-        public IActionResult InicioSesion()
+        public IActionResult ViewLogin()
         {
             return View();
         }
@@ -39,7 +39,7 @@ namespace blackcat.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> InicioSesion(Usuario usuario)
+        public async Task<IActionResult> ViewLogin(Usuario usuario)
         {
             var user = await _userService.IniciarSesionAsync(usuario.NombreU, usuario.Cont);
     
@@ -48,6 +48,9 @@ namespace blackcat.Controllers
                 ViewBag.Error = "Correo o contraseña incorrectos.";
                 return View();
             }
+            
+            HttpContext.Session.SetString("usuario", user.NombreU);
+            HttpContext.Session.SetString("rol", user.IdRolNavigation?.Nombre ?? "");
             
             string rol = user.IdRolNavigation?.Nombre ?? "";
             
@@ -63,9 +66,14 @@ namespace blackcat.Controllers
                     ViewBag.Error = "Rol no reconocido.";
                     return View();
             }
-            
             // Aquí puedes guardar info en sesión, cookie, etc.
             return RedirectToAction("ViewUser", "Home");
+        }
+        
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear(); // 🧹 Limpia todos los datos de la sesión
+            return RedirectToAction("Index", "Home"); // Puedes cambiar la vista a donde quieras redirigir
         }
 
     }
