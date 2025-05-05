@@ -26,14 +26,17 @@ public class AdminController : Controller
     {
         return View();
     }
-    //Hay que agregar el cambio de rol y agregar un Modal(Ventana emergente donde indique usuario registrado)
+
     [ValidateAntiForgeryToken]
     [HttpPost]
     public async Task<IActionResult> ViewRegmod(Usuario usuario)
     {
-        var resultado = await _userService.RegistrarUsuarioAsync(usuario);
+        var resultado = await _userService.RegistrarUsuarioAsync(usuario,2);
         if (resultado == "Usuario registrado correctamente.")
-            return RedirectToAction("InicioSesion");
+        {
+            ViewBag.Mensaje = "¡Registro completado correctamente!";
+            return View();
+        }
 
         ViewBag.Error = resultado;
         return View();
