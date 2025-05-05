@@ -34,9 +34,20 @@ public class HomeController : Controller
         return View(data);
     }
 
-    public IActionResult Catalogo()
+    public async Task<IActionResult> Catalogo(int pg=1)
     {
-        return View();
+        var libros = await _librosServices.GetLibros();
+        
+        const int pageSize = 5;
+        if (pg < 1)
+            pg = 1;
+        int recsCount = libros.Count();
+        var pager = new Pager(recsCount,pg, pageSize);
+        int recSkip = (pg - 1) * pageSize;
+        var data = libros.Skip(recSkip).Take(pageSize).ToList();
+        this.ViewBag.Pager = pager;
+        
+        return View(data);
     }
     public IActionResult ViewUser()
     {

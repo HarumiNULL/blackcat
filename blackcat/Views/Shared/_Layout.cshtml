@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -30,7 +32,29 @@
                 <!-- Menú izquierdo -->
                 <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                        @{
+                            var rol = HttpContextAccessor.HttpContext.Session.GetString("rol");
+                        }
+                        @if (rol == "Publico")
+                        {
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                        }
+                        else if( rol == "Administrador")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="PagAdmin">Inicio</a>
+                            </li>
+                        }
+                        else if (rol == "Moderador")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Moderator" asp-action="PagMode">Inicio</a>
+                            </li>
+                        }
+                        else
+                        { 
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                        }
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Catalogo">Catálogo</a>
@@ -39,7 +63,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Foro" asp-action="Index">Foro</a>
                     </li>
                 </ul>
-
+                
                 <!-- Buscador centrado -->
                 <div class="search-bar w-50">
                     <div class="input-group">
@@ -49,33 +73,36 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Botones a la derecha dinámicos -->
-                <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
-                    @if (Context.Session.GetString("NombreU") == null)
-                    {
-                        <!-- Si NO está logueado -->
+                
+                <!-- Botones a la derecha -->
+                @if (HttpContextAccessor.HttpContext.Session.GetString("usuario") == null)
+                {
+                    <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
                         <a asp-controller="User" asp-action="Registro"
                            class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">
                             Registro
                         </a>
-                        <a asp-controller="User" asp-action="InicioSesion"
+                        <a asp-controller="User" asp-action="ViewLogin"
                            class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-secondary-custom">
                             Inicio Sesión
                         </a>
-                    }
-                    else
+                    </div>
+                }
+                <!-- Menú derecho: avatar y cerrar sesión si hay usuario logueado -->
+                <ul class="navbar-nav mb-2 mb-sm-0">
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("usuario") != null)
                     {
-                        <!-- Si está logueado -->
-                        <form asp-controller="User" asp-action="CerrarSesion" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-danger text-white">
-                                Cerrar Sesión
-                            </button>
-                        </form>
+                        <li class="nav-item d-flex align-items-center me-2">
+                            <span class="text-dark fw-semibold">👤 @HttpContextAccessor.HttpContext.Session.GetString("usuario")</span>
+                        </li>
+                        <li class="nav-item">
+                            <form asp-controller="User" asp-action="CerrarSesion" method="post" class="d-inline">
+                                <button class="btn btn-light shadow-sm border rounded-pill px-4 py-2 bg-terciary-custom">Cerrar sesión</button>
+                            </form>
+                        </li>
                     }
-                </div>
-
-
+                </ul>
+                
             </div>
         </div>
     </nav>

@@ -92,3 +92,12 @@ body {
   padding: 10px 20px;
   border-radius: 10px;
 }
+
+.floating-box {
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  width: 200px;
+  border-radius: 1rem;
+  background-color: white;
+}

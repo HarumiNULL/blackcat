@@ -15,7 +15,7 @@ namespace blackcat.Services
             _context = context;
         }
 
-        public async Task<string> RegistrarUsuarioAsync(Usuario request)
+        public async Task<string> RegistrarUsuarioAsync(Usuario request, int rol = 3)
         {
             var existe = await _context.Usuarios.AnyAsync(u => u.CorreoU == request.CorreoU);
             if (existe)
@@ -26,7 +26,7 @@ namespace blackcat.Services
                 NombreU = request.NombreU,
                 CorreoU = request.CorreoU,
                 Cont = BCrypt.Net.BCrypt.HashPassword(request.Cont),
-                IdRol = 3,
+                IdRol = rol,
                 IdEstado = 1
                 
             };
