@@ -101,3 +101,11 @@ body {
   border-radius: 1rem;
   background-color: white;
 }
+
+.ratio-191x100 {
+  aspect-ratio: 1.91 / 1;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
