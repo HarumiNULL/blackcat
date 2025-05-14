@@ -109,3 +109,32 @@ body {
 .object-fit-cover {
   object-fit: cover;
 }
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.table th {
+  background-color: #f0f3f8;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.btn-create {
+  border-radius: 10px;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}

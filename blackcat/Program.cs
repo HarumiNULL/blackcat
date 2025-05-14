@@ -24,12 +24,12 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    BlackcatDbContext context = scope.ServiceProvider.GetRequiredService<BlackcatDbContext>();
-    context.Database.EnsureCreated();
-    DbInitializer.Seed(context);
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     BlackcatDbContext context = scope.ServiceProvider.GetRequiredService<BlackcatDbContext>();
+//     context.Database.EnsureCreated();
+//     DbInitializer.Seed(context);
+// }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) 

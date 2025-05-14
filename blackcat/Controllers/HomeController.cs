@@ -9,14 +9,16 @@ namespace blackcat.Controllers;
 public class HomeController : Controller
 {
     private readonly LibrosServices _librosServices;
+    private readonly IConfiguration _config;
     
     private readonly ILogger<HomeController> _logger;
     BlackcatDbContext _context ;
-    public HomeController(BlackcatDbContext context, ILogger<HomeController> logger)
+    public HomeController(BlackcatDbContext context, ILogger<HomeController> logger, IConfiguration config)
     {
         _context = context;
+        _config = config;
         _logger = logger;
-        _librosServices = new LibrosServices(_context);
+        _librosServices = new LibrosServices(_context, _config);
     }
     public async Task<IActionResult> Index(int pg=1)
     {

@@ -1,0 +1,109 @@
+﻿@model blackcat.Models.viewModels.LibrosViewModel
+@{
+    ViewBag.Title = "Registro Libros";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-99">
+    <div class="p-4 rounded-4" style="background-color: #a8d9d2; width: 80%; max-width: 480px;">
+        <div class="bg-white p-4 rounded-3 shadow-sm">
+            <h2 class="text-center mb-4" style="font-weight: bold;">Registro Libros</h2>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+            @if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-success">@ViewBag.Mensaje</div>
+            }
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label asp-for="NombreL" class="form-label">Nombre de Libro</label>
+                    <input name="NombreL" class="form-control" asp-for="NombreL" placeholder="Ingrese nombre"
+                           required/>
+                    <span asp-validation-for="NombreL" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Autor" class="form-label">Autor</label>
+                    <input name="Autor" class="form-control" asp-for="Autor"
+                           placeholder="Ingrese el nombre del autor" required/>
+                    <span asp-validation-for="Autor" class="text-danger"></span>
+                </div>
+
+                <!-- Selector de archivo (PDF/libro) -->
+                <div class="mb-3">
+                    <label asp-for="ArchivoForm" class="form-label">Archivo del Libro (PDF)</label>
+                    <input name="ArchivoForm" class="form-control" asp-for="ArchivoForm" accept=".pdf,.epub" required/>
+                    <span asp-validation-for="ArchivoForm" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Descripcion" class="form-label">Descripcion</label>
+                    <input name="Descripcion" class="form-control" asp-for="Descripcion"
+                           placeholder="Ingrese la descripcion" required/>
+                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                </div>
+                
+    
+                <!-- Vista previa de la imagen -->
+                <div class="mb-3" id="imagen-preview-container" style="display: none;">
+                    <label class="form-label"></label>
+                    <img id="imagen-preview" src="#" alt="Vista previa de la imagen" style="max-wasp-forth: 200px; max-height: 200px;" />
+                </div> 
+                
+                <!-- Selector de imagen (portada) -->
+                <div class="mb-3">
+                    <label asp-for="ImagenForm" class="form-label">Imagen de Portada</label>
+                    <input name="ImagenForm" class="form-control" asp-for="ImagenForm" accept="image/*" required />
+                    <span asp-validation-for="ImagenForm" class="text-danger"></span>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Importar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Caja flotante lateral -->
+<div class="col-md-4">
+    <div class="card p-3 floating-box shadow-sm d-flex flex-row align-items-center">
+        <!-- Gatito a la izquierda -->
+        <img src="~/icons/gato.ico" alt="gatito" style="width: 80px;" class="me-3"/>
+
+        <!-- Texto y botón a la derecha -->
+        <div class="text-center">
+            <p class="fw-bold text-info mb-2">Lista de Libros</p>
+            <a asp-action="ViewBookList" class="btn btn-outline-info btn-sm">Ingresar</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('ImagenForm').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('imagen-preview-container');
+            const preview = document.getElementById('imagen-preview');
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        });
+    </script>
+}

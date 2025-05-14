@@ -51,6 +51,7 @@ namespace blackcat.Controllers
             
             HttpContext.Session.SetString("usuario", user.NombreU);
             HttpContext.Session.SetString("rol", user.IdRolNavigation?.Nombre ?? "");
+            HttpContext.Session.SetInt32("Id", user.IdU);
             
             string rol = user.IdRolNavigation?.Nombre ?? "";
             

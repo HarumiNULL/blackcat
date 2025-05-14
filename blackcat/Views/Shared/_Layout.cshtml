@@ -33,7 +33,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                     <li class="nav-item">
                         @{
-                            var rol = HttpContextAccessor.HttpContext.Session.GetString("rol");
+                            var rol = Context.Session.GetString("rol");
                         }
                         @if (rol == "Publico")
                         {
@@ -75,7 +75,7 @@
                 </div>
                 
                 <!-- Botones a la derecha -->
-                @if (HttpContextAccessor.HttpContext.Session.GetString("usuario") == null)
+                @if (Context.Session.GetString("usuario") == null)
                 {
                     <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 ms-sm-3">
                         <a asp-controller="User" asp-action="Registro"
@@ -90,10 +90,10 @@
                 }
                 <!-- Menú derecho: avatar y cerrar sesión si hay usuario logueado -->
                 <ul class="navbar-nav mb-2 mb-sm-0">
-                    @if (HttpContextAccessor.HttpContext.Session.GetString("usuario") != null)
+                    @if (Context.Session.GetString("usuario") != null)
                     {
                         <li class="nav-item d-flex align-items-center me-2">
-                            <span class="text-dark fw-semibold">👤 @HttpContextAccessor.HttpContext.Session.GetString("usuario")</span>
+                            <span class="text-dark fw-semibold">👤 @Context.Session.GetString("usuario")</span>
                         </li>
                         <li class="nav-item">
                             <form asp-controller="User" asp-action="CerrarSesion" method="post" class="d-inline">

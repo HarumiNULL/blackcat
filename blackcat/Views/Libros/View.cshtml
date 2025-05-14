@@ -1,0 +1,29 @@
+﻿@model blackcat.Models.viewModels.LibrosViewModel
+
+<div>
+    <div>
+        <img class="card-img-top rounded" style='max-width: 300px;'
+             src="data:image;base64,@Convert.ToBase64String(Model.Foto!)" alt="imagen @Model.NombreL"/>
+    </div>
+    <div>
+        <h2>@Model.NombreL</h2>
+        <h3>@Model.Autor</h3>
+        <p>@Model.Archivo</p>
+        <div>
+            <p class="card-text text-truncate">@Model.NombreL</p>
+        </div>
+        @if (Context?.Session.GetString("usuario") != null)
+        {
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a class="btn btn-danger" asp-action="AddBookList" asp-route-idBook="@Model.IdL">Agregar a "Mi lista"</a>
+                <a class="btn btn-warning" asp-action="ReadArchive" asp-route-nombreArchivo="@Model.Archivo">Leer</a>
+            </div>
+        }
+        else
+        {
+            <p>Inicie o cree una cuenta para mirar libros</p>
+        }
+    </div>
+</div>
+
+
