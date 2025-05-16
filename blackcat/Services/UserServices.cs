@@ -17,6 +17,7 @@ namespace blackcat.Services
             _context = context;
             _userRepository = new UserRepository(context);
         }
+        
 
         public async Task<string> RegistrarUsuarioAsync(Usuario request, int rol = 3)
         {
@@ -42,8 +43,7 @@ namespace blackcat.Services
 
         public async Task<Usuario?> IniciarSesionAsync(string nombre, string contra)
         {
-            var usuario = await _context.Usuarios.Include(u => u.IdRolNavigation)
-                .FirstOrDefaultAsync(u => u.NombreU == nombre);
+            var usuario = await _userRepository.ObtenerUsuAsync(nombre);
             if (usuario == null)
                 return null;
 
@@ -80,6 +80,29 @@ namespace blackcat.Services
                 return null!;
             }
         }
-
+        public async Task<bool> CambiarEstadoUsuarioAsync(int userId, int nuevoEstadoId)
+        {
+            try
+            {
+                return await _userRepository.ToggleUserStatusAsync(userId, nuevoEstadoId);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        
+        public async Task<bool> EliminarUsuarioAsync(int userId)
+        {
+            try
+            {
+                return await _userRepository.DeleteUserAsync(userId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en servicio al eliminar: {ex.Message}");
+                return false;
+            }
+        }
 }
 }

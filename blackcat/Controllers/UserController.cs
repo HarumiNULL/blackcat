@@ -23,7 +23,7 @@ namespace blackcat.Controllers
         {
             var resultado = await _userService.RegistrarUsuarioAsync(usuario);
             if (resultado == "Usuario registrado correctamente.")
-                return RedirectToAction("InicioSesion");
+                return RedirectToAction("ViewLogin");
 
             ViewBag.Error = resultado;
             return View();
@@ -48,7 +48,13 @@ namespace blackcat.Controllers
                 ViewBag.Error = "Correo o contraseña incorrectos.";
                 return View();
             }
-            
+
+            if (user.IdEstado == 3)
+            {
+                ViewBag.Error = "Usuario bloqueado";
+                return View();
+            }
+
             HttpContext.Session.SetString("usuario", user.NombreU);
             HttpContext.Session.SetString("rol", user.IdRolNavigation?.Nombre ?? "");
             HttpContext.Session.SetInt32("Id", user.IdU);

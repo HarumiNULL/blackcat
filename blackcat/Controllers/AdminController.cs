@@ -95,4 +95,40 @@ public class AdminController : Controller
         ViewBag.Error = "¡Registro fallido!";
         return View();
     }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> BloquearUsuario(int id)
+    {
+        var resultado = await _userService.CambiarEstadoUsuarioAsync(id, nuevoEstadoId:3 );
+        if (!resultado)
+        {
+            TempData["Error"] = "No se pudo bloquear al usuario";
+        }
+        return RedirectToAction("ViewListUser");
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DesbloquearUsuario(int id)
+    {
+        var resultado = await _userService.CambiarEstadoUsuarioAsync(id, nuevoEstadoId: 1);
+        if (!resultado)
+        {
+            TempData["Error"] = "No se pudo desbloquear al usuario";
+        }
+        return RedirectToAction("ViewListUser");
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> EliminarUsuario(int id)
+    {
+  
+        var resultado = await _userService.EliminarUsuarioAsync(id);
+        if (!resultado)
+        {
+            TempData["Error"] = "No se pudo eliminar al usuario";
+        }
+        return RedirectToAction("ViewListUser");
+    }
 }
