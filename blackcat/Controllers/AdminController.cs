@@ -2,9 +2,11 @@
 using blackcat.Models.viewModels;
 using Microsoft.AspNetCore.Mvc;
 using blackcat.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace blackcat.Controllers;
 
+[Authorize(Roles = "Administrador")]
 public class AdminController : Controller
 {
     private readonly BlackcatDbContext _context;
@@ -22,8 +24,6 @@ public class AdminController : Controller
     // GET
     public IActionResult PagAdmin()
     {
-        if (string.IsNullOrEmpty(HttpContext.Session.GetString("usuario")))
-            return RedirectToAction("ViewLogin", "User");
         return View();
     }
 
@@ -59,7 +59,6 @@ public class AdminController : Controller
         ViewBag.Error = resultado;
         return View();
     }
-
     public async Task<IActionResult> ViewBookList(int pg = 1)
     {
         var libros = await _librosService.GetLibros();

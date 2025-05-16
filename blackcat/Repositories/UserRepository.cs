@@ -1,5 +1,6 @@
 ﻿using blackcat.Models;
 using blackcat.Models.Dtos;
+using blackcat.Models.viewModels;
 using blackcat.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -126,6 +127,28 @@ public class UserRepository
         {
             Console.WriteLine($"Error al eliminar usuario: {ex.Message}");
             return false;
+        }
+    }
+    
+    public async Task<OlvideClaveDto> CreateRecoveryToken(string email)
+    {
+        try
+        {
+            var user = await _context.Usuarios
+                .Where(u => u.CorreoU == email)
+                .FirstOrDefaultAsync();
+            string recoveryToken = Guid.NewGuid().ToString();
+            // user!.ContrasenaToken = recoveryToken;
+            await _context.SaveChangesAsync();
+            return new OlvideClaveDto()
+            {
+                Email = user.CorreoU,
+                Token = recoveryToken
+            };
+        }
+        catch (SystemException)
+        {
+            return null!;
         }
     }
 }

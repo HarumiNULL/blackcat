@@ -1,5 +1,6 @@
 using blackcat.Models;
 using blackcat.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,12 @@ builder.Services.AddHttpContextAccessor();
 
 
 builder.Services.AddDbContext<BlackcatDbContext>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+  options.LoginPath="/User/ViewLogin";
+  options.AccessDeniedPath = "/User/AccessDenied";
+});
 
 // ⚡ Agrega la sesión
 builder.Services.AddSession(options =>

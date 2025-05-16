@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using blackcat.Models;
+using blackcat.Models.viewModels;
 using blackcat.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace blackcat.Controllers
 {
@@ -55,11 +58,9 @@ namespace blackcat.Controllers
                 return View();
             }
 
-            HttpContext.Session.SetString("usuario", user.NombreU);
-            HttpContext.Session.SetString("rol", user.IdRolNavigation?.Nombre ?? "");
-            HttpContext.Session.SetInt32("Id", user.IdU);
-            
-            string rol = user.IdRolNavigation?.Nombre ?? "";
+            var result = await _userService.CreateCredentials(user, false, HttpContext);
+
+            string? rol = user.Rol;
             
             switch (rol)
             {
@@ -77,11 +78,27 @@ namespace blackcat.Controllers
             return RedirectToAction("ViewUser", "Home");
         }
         
-        public IActionResult CerrarSesion()
+        public async Task<IActionResult> CerrarSesion()
         {
-            HttpContext.Session.Clear(); // 🧹 Limpia todos los datos de la sesión
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home"); // Puedes cambiar la vista a donde quieras redirigir
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        public IActionResult OlvideClave()
+        {
+            return View();
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult OlvideClave(OlvideClaveViewModel model)
+        {
+            return View();
+        }
     }
 }
