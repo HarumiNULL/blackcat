@@ -21,7 +21,11 @@
                          alt="Slide 1">
                 </div>
                 <div class="carousel-caption d-md-block">
-                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Descripción</button>
+                    <form asp-controller="Libros" asp-action="View" asp-route-id="1" method="get">
+                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
+                            Descripción
+                        </button>
+                    </form>
                 </div>
             </div>
             <div class="carousel-item">
