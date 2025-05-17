@@ -96,9 +96,49 @@ namespace blackcat.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult OlvideClave(OlvideClaveViewModel model)
+        public async Task<IActionResult> OlvideClave(OlvideClaveViewModel model)
         {
+            var result = await _userService.OlvideClave(model.Correo!);
+            if (!result)
+            {
+                ViewBag.Error = "Error enviando el correo, intentenlo de nuevo";
+                return View(model);
+            }
+
+            ViewBag.Mensaje = "Ingrese a su correo electronico para continuar con el proceso";
+            return View(nameof(ViewLogin));
+        }
+
+        public async Task<IActionResult> RecuperarContrasena()
+        {
+            string recoveryToken = Request.Query["token"].ToString();
+            var result = await _userService.ExisteTokenRecuperacion(recoveryToken);
+            if (!result || recoveryToken == "")
+            {
+                ViewBag.Error = "Token invalido o ya usado";
+                return View("ViewLogin");
+            }
+
+            ViewData["Token"] = recoveryToken;
             return View();
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> RecuperarContrasena(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await _userService.CambiarContrasena(model);
+            if (!result)
+            {
+                ViewBag.Error = "Error intentalo de Nuevo";
+                return View(model);
+            }
+
+            ViewData["Success"] = "Contraseña actualizada";
+            return View("ViewLogin");
         }
     }
 }

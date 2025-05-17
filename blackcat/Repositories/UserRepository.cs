@@ -11,7 +11,7 @@ public class UserRepository
 {
     private readonly BlackcatDbContext _context;
 
-    public UserRepository(BlackcatDbContext  dbContext)
+    public UserRepository(BlackcatDbContext dbContext)
     {
         _context = dbContext;
     }
@@ -27,28 +27,36 @@ public class UserRepository
         return await _context.Usuarios
             .AnyAsync(u => u.NombreU == nombreUsuario);
     }
-    
+
     public async Task<Usuario> RegistrarUsuarioAsync(Usuario usuario)
     {
         usuario.Cont = BCrypt.Net.BCrypt.HashPassword(usuario.Cont);
         usuario.IdEstado = 1; // Estado activo por defecto
-        
+
         _context.Usuarios.Add(usuario);
         await _context.SaveChangesAsync();
-        
+
         return usuario;
     }
 
 
     public async Task<Usuario?> ObtenerUsuAsync(string nombre)
     {
-        return await _context.Usuarios.Include(u => u.IdRolNavigation)
-            .FirstOrDefaultAsync(u => u.NombreU == nombre);
+        try
+        {
+            return await _context.Usuarios.Include(u => u.IdRolNavigation)
+                .FirstOrDefaultAsync(u => u.NombreU == nombre);
+        }
+        catch (Exception ex)
+        {
+            // Loggear el error (usando ILogger, Serilog, etc.)
+            Console.WriteLine($"Error al obtener usuario: {ex.Message}");
+            return null; // O lanzar una excepción personalizada
+        }
     }
 
     public async Task<List<UserDto>> ListUserAsync()
     {
-        
         try
         {
             List<Usuario> users = await _context.Usuarios
@@ -58,16 +66,15 @@ public class UserRepository
             List<UserDto> usersDtos = new List<UserDto>();
             foreach (var user in users)
             {
-                var  userDto= new UserDto()
+                var userDto = new UserDto()
                 {
                     IdU = user.IdU,
                     IdRol = user.IdRol,
                     IdEstado = user.IdEstado,
                     NombreU = user.NombreU,
-                    CorreoU = user.CorreoU, 
+                    CorreoU = user.CorreoU,
                     Estado = user.IdEstadoNavigation?.Estado,
                     Rol = user.IdRolNavigation?.Nombre
-                    
                 };
                 usersDtos.Add(userDto);
             }
@@ -79,7 +86,7 @@ public class UserRepository
             return null!;
         }
     }
-    
+
     public async Task<Usuario?> GetUserByIdAsync(int id)
     {
         try
@@ -94,6 +101,7 @@ public class UserRepository
             return null;
         }
     }
+
     public async Task<bool> ToggleUserStatusAsync(int userId, int nuevoEstadoId)
     {
         try
@@ -111,14 +119,14 @@ public class UserRepository
             return false;
         }
     }
-    
+
     public async Task<bool> DeleteUserAsync(int userId)
     {
         try
         {
             var user = await _context.Usuarios.FindAsync(userId);
             if (user == null) return false;
-            
+
             _context.Usuarios.Remove(user);
             await _context.SaveChangesAsync();
             return true;
@@ -129,7 +137,7 @@ public class UserRepository
             return false;
         }
     }
-    
+
     public async Task<OlvideClaveDto> CreateRecoveryToken(string email)
     {
         try
@@ -138,17 +146,42 @@ public class UserRepository
                 .Where(u => u.CorreoU == email)
                 .FirstOrDefaultAsync();
             string recoveryToken = Guid.NewGuid().ToString();
-            // user!.ContrasenaToken = recoveryToken;
+            user!.ContrasenaToken = recoveryToken;
             await _context.SaveChangesAsync();
             return new OlvideClaveDto()
             {
                 Email = user.CorreoU,
+                Name = user.NombreU,
                 Token = recoveryToken
             };
         }
         catch (SystemException)
         {
             return null!;
+        }
+    }
+
+    public async Task<bool> ExisteTokenAsync(string token)
+    {
+        return await _context.Usuarios
+            .AnyAsync(u => u.ContrasenaToken == token);
+    }
+
+    public async Task<bool> ResetPasswordAsync(string token, string claveHash)
+    {
+        try
+        {
+            var user = await _context.Usuarios
+                .Where(u => u.ContrasenaToken == token)
+                .FirstOrDefaultAsync();
+            user!.Cont = claveHash;
+            user.ContrasenaToken = "";
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (SystemException)
+        {
+            return false;
         }
     }
 }

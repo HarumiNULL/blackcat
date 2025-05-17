@@ -1,0 +1,34 @@
+﻿@model blackcat.Models.viewModels.ResetPasswordViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+    ViewData["Title"] = "Registro";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-99">
+    <div class="p-4 rounded-4" style="background-color: #a8d9d2; width: 80%; max-width: 480px;">
+        <div class="bg-white p-4 rounded-3 shadow-sm">
+            <h2 class="text-center mb-4" style="font-weight: bold;">Recuperar Contraseña</h2>
+
+            <form method="post" asp-controller="User" asp-action="RecuperarContrasena">
+                <input type="hidden" asp-for="Token" value="@ViewBag.Token"/>
+                <div class="mb-3">
+                    <label asp-for="Clave" class="form-label">Contraseña</label>
+                    <input class="form-control" asp-for="Clave" placeholder="Ingrese contraseña">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ConfirmarClave" class="form-label">Contraseña</label>
+                    <input class="form-control" asp-for="ConfirmarClave" placeholder="Confirmar contraseña">
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Confirmar</button>
+                    <a href="/" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+ 
+    </div>
+</div>
+

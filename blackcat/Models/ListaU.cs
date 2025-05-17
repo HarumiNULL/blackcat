@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace blackcat.Models;
 
@@ -15,5 +14,4 @@ public partial class ListaU
     public virtual Libro? IdLibroNavigation { get; set; }
 
     public virtual Usuario? IdUsuarioNavigation { get; set; }
-    
 }
