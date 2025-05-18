@@ -18,7 +18,7 @@ public class LibrosRepository
         
         try
         {
-            List<Libro> libros = await _context.Libros.ToListAsync();
+            List<Libro?> libros = await _context.Libros.ToListAsync();
             List<LibrosDto> librosDtos = new List<LibrosDto>();
             foreach (var libro in libros)
             {
@@ -43,6 +43,78 @@ public class LibrosRepository
         catch (SystemException)
         {
             return null!;
+        }
+    }
+
+    public async Task<LibrosDto> GetLibroAsync(int id)
+    {
+        try
+        {
+            Libro? libro = await _context.Libros.FindAsync(id);
+            byte[]? imageBytes;
+            imageBytes = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + libro?.Imagen!);
+
+            if (libro != null)
+            {
+                var  libroDto = new LibrosDto()
+                {
+                    IdL = libro.IdL,
+                    NombreL = libro.NombreL,
+                    Autor = libro.Autor,
+                    Descripcion = libro.Descripcion,
+                    Imagen = libro.Imagen,
+                    Foto = imageBytes,
+                    Archivo = libro.Archivo
+                };
+                return libroDto;
+            }
+
+            return null!;
+        }
+        catch (SystemException)
+        {
+            return null!;
+        }
+    }
+
+    public async Task<bool> AddBookList(int idBook, int idUser)
+    {
+        try
+        {
+            var newComment = new ListaU()
+            {
+                IdLibro = idBook,
+                IdUsuario = idUser
+            };
+            await _context.ListaUs.AddAsync(newComment);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (SystemException)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> AddBook(LibrosDto librosDto)
+    {
+        try
+        {
+            var libro = new Libro()
+            {
+                NombreL = librosDto.NombreL,
+                Autor = librosDto.Autor,
+                Descripcion = librosDto.Descripcion,
+                Imagen = librosDto.Imagen,
+                Archivo = librosDto.Archivo
+            };
+            _context.Libros.Add(libro);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (SystemException)
+        {
+            return false;
         }
     }
 }

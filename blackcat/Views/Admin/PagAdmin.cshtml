@@ -15,7 +15,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li><a class="dropdown-item" href="@Url.Action("ViewRegmod","Admin")">Registro Moderadores</a></li>
-                <li><a class="dropdown-item" href="#">Modificación de Usuario</a></li>
+                <li><a class="dropdown-item" href="@Url.Action("ViewListUser","Admin")">Modificación de Usuario</a></li>
             </ul>
         </div>
 
@@ -25,8 +25,8 @@
                 Gestión de Libros
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <li><a class="dropdown-item" href="#">Agregar Libro</a></li>
-                <li><a class="dropdown-item" href="#">Editar Libro</a></li>
+                <li><a class="dropdown-item" asp-action="ViewRegBook">Agregar Libro</a></li>
+                <li><a class="dropdown-item" asp-action="ViewBookList">Editar Libro</a></li>
             </ul>
         </div>
 

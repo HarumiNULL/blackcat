@@ -1,0 +1,74 @@
+﻿@model List<blackcat.Models.viewModels.UserViewModel>
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+  <h2 class="fw-bold mb-4">Lista de Usuarios</h2>
+  <div class="card p-3 shadow-sm">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo de Usuario</th>
+        <th>Estado</th>
+        <th>Correo</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      @foreach (var user in Model)
+      {
+        <tr>
+          <td>@user.NombreU</td>
+          <td>@user.Rol</td>
+          <td>
+            <span class="badge bg-@(user.Estado == "bloqueado" ? "danger" : "success")">
+              @user.Estado
+            </span>
+          </td>
+          <td>@user.CorreoU</td>
+          <td>
+            <div class="dropdown">
+              <button class="btn-sm bg-secondary-custom  text-dark  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Opciones
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="#">Editar</a></li>
+                <li>
+                  @if (user.Estado == "Bloqueado")
+                  {
+                    <form asp-controller="Admin" asp-action="DesbloquearUsuario" method="post">
+                      <input type="hidden" name="id" value="@user.IdU" />
+                      @Html.AntiForgeryToken()
+                      <button type="submit" class="dropdown-item">Desbloquear</button>
+                    </form>
+                  }
+                  else
+                  {
+                    <form asp-controller="Admin" asp-action="BloquearUsuario" method="post">
+                      <input type="hidden" name="id" value="@user.IdU" />
+                      @Html.AntiForgeryToken()
+                      <button type="submit" class="dropdown-item">Bloquear</button>
+                    </form>
+                  }
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form asp-controller="Admin" asp-action="EliminarUsuario" method="post"
+                        onsubmit="return confirm('¿Está seguro de eliminar este usuario?');">
+                    <input type="hidden" name="id" value="@user.IdU" />
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="dropdown-item text-danger">Eliminar</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+</div>

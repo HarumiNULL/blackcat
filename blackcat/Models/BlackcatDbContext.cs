@@ -21,7 +21,7 @@ public partial class BlackcatDbContext : DbContext
 
     public virtual DbSet<Informacion> Informacions { get; set; }
 
-    public virtual DbSet<Libro> Libros { get; set; }
+    public virtual DbSet<Libro?> Libros { get; set; }
 
     public virtual DbSet<ListaU> ListaUs { get; set; }
 
@@ -33,7 +33,7 @@ public partial class BlackcatDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=127.0.0.1;Database=blackcatDB;User Id=Shirly;Password=230425sd@;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=tcp:proyectosids.database.windows.net,1433;Initial Catalog=blackcatDB;Persist Security Info=False;User ID=julian;Password=3118028480Jd.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

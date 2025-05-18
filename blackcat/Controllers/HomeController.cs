@@ -9,14 +9,16 @@ namespace blackcat.Controllers;
 public class HomeController : Controller
 {
     private readonly LibrosServices _librosServices;
+    private readonly IConfiguration _config;
     
     private readonly ILogger<HomeController> _logger;
     BlackcatDbContext _context ;
-    public HomeController(BlackcatDbContext context, ILogger<HomeController> logger)
+    public HomeController(BlackcatDbContext context, ILogger<HomeController> logger, IConfiguration config)
     {
         _context = context;
+        _config = config;
         _logger = logger;
-        _librosServices = new LibrosServices(_context);
+        _librosServices = new LibrosServices(_context, _config);
     }
     public async Task<IActionResult> Index(int pg=1)
     {
@@ -25,7 +27,7 @@ public class HomeController : Controller
         const int pageSize = 5;
         if (pg < 1)
             pg = 1;
-        int recsCount = libros.Count();
+        int recsCount = (libros != null)?libros.Count(): 0;
         var pager = new Pager(recsCount,pg, pageSize);
         int recSkip = (pg - 1) * pageSize;
         var data = libros.Skip(recSkip).Take(pageSize).ToList();
