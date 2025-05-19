@@ -52,7 +52,8 @@ public class AdminController : Controller
         var resultado = await _userService.RegistrarUsuarioAsync(usuario,2);
         if (resultado == "Usuario registrado correctamente.")
         {
-            ViewBag.Mensaje = "¡Registro completado correctamente!";
+            TempData["ToastMessage"] = "¡Registro completado correctamente!";
+            TempData["ToastType"] = "success";
             return View();
         }
 
@@ -88,10 +89,12 @@ public class AdminController : Controller
         var resultado = await _librosService.RegistrarLibroAsync(model);
         if (resultado)
         {
-            ViewBag.Mensaje = "¡Registro completado correctamente!";
+            TempData["ToastMessage"] = "¡Registro completado correctamente!";
+            TempData["ToastType"] = "success";
             return View();
         }
-        ViewBag.Error = "¡Registro fallido!";
+        TempData["ToastMessage"] = "¡Registro fallido!";
+        TempData["ToastType"] = "success";
         return View();
     }
     

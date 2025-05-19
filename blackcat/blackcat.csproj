@@ -14,8 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-
-      <Folder Include="Dtos\" />
       <Folder Include="Utilities\" />
       <Folder Include="Views\Error\" />
       <Folder Include="Views\Foro\" />
@@ -26,7 +24,6 @@
     
     <ItemGroup>
       <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
-      <Folder Include="Dtos\" />
       <Folder Include="Repositories\" />
       <Folder Include="wwwroot\staticFiles\images\" />
       <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
