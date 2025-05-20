@@ -21,7 +21,7 @@ public partial class BlackcatDbContext : DbContext
 
     public virtual DbSet<Informacion> Informacions { get; set; }
 
-    public virtual DbSet<Libro?> Libros { get; set; }
+    public virtual DbSet<Libro> Libros { get; set; }
 
     public virtual DbSet<ListaU> ListaUs { get; set; }
 
@@ -30,10 +30,11 @@ public partial class BlackcatDbContext : DbContext
     public virtual DbSet<Tipoinfo> Tipoinfos { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:proyectosids.database.windows.net,1433;Initial Catalog=blackcatDB;Persist Security Info=False;User ID=julian;Password=3118028480Jd.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        => optionsBuilder.UseSqlServer("Server=tcp:proyectosids.database.windows.net,1433;Initial Catalog=blackcatDB;Persist Security Info=False;User ID=julian;Password=3118028480Jd.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,6 +43,10 @@ public partial class BlackcatDbContext : DbContext
             entity.HasKey(e => e.IdBus).HasName("PK__busqueda__383854C874BC6B66");
 
             entity.ToTable("busqueda");
+
+            entity.HasIndex(e => e.IdEstadoBus, "IX_busqueda_id_estadoBus");
+
+            entity.HasIndex(e => e.IdLibro, "IX_busqueda_id_libro");
 
             entity.Property(e => e.IdBus).HasColumnName("idBus");
             entity.Property(e => e.CantB).HasColumnName("cantB");
@@ -82,6 +87,10 @@ public partial class BlackcatDbContext : DbContext
             entity.HasKey(e => e.IdInfo).HasName("PK__informac__B0BF47D71C7A20DC");
 
             entity.ToTable("informacion");
+
+            entity.HasIndex(e => e.IdTipoinfo, "IX_informacion_id_tipoinfo");
+
+            entity.HasIndex(e => e.IdUsuario, "IX_informacion_id_usuario");
 
             entity.Property(e => e.IdInfo).HasColumnName("idInfo");
             entity.Property(e => e.Descrip)
@@ -140,6 +149,10 @@ public partial class BlackcatDbContext : DbContext
 
             entity.ToTable("listaU");
 
+            entity.HasIndex(e => e.IdLibro, "IX_listaU_id_libro");
+
+            entity.HasIndex(e => e.IdUsuario, "IX_listaU_id_usuario");
+
             entity.Property(e => e.IdLista).HasColumnName("idLista");
             entity.Property(e => e.IdLibro).HasColumnName("id_libro");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
@@ -183,12 +196,19 @@ public partial class BlackcatDbContext : DbContext
 
             entity.ToTable("usuario");
 
+            entity.HasIndex(e => e.IdEstado, "IX_usuario_id_estado");
+
+            entity.HasIndex(e => e.IdRol, "IX_usuario_id_rol");
+
             entity.Property(e => e.IdU).HasColumnName("idU");
             entity.Property(e => e.Cont)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("cont");
+            entity.Property(e => e.ContrasenaToken)
+                .HasMaxLength(200)
+                .IsUnicode(false);
             entity.Property(e => e.CorreoU)
                 .HasMaxLength(100)
                 .IsUnicode(false)

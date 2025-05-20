@@ -138,3 +138,14 @@ body {
 .dropdown-toggle::after {
   display: none;
 }
+.nav-link {
+  color: #ecf0f1;
+  margin: 0 0.5rem;
+  font-weight: 500;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+}
+

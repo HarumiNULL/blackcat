@@ -81,6 +81,9 @@ public class LibrosRepository
     {
         try
         {
+            var exists = await _context.ListaUs.Where(l => l.IdLibro == idBook && l.IdUsuario == idUser).AnyAsync();
+            if (exists)
+                return false;
             var newComment = new ListaU()
             {
                 IdLibro = idBook,
@@ -117,4 +120,35 @@ public class LibrosRepository
             return false;
         }
     }
+    
+    public async Task<List<LibrosDto>> GetLibrosPorUsuarioAsync(int idUsuario)
+    {
+        try
+        {
+            var libros = await _context.ListaUs
+                .Where(lu => lu.IdUsuario == idUsuario)
+                .Include(lu => lu.IdLibroNavigation) // Incluye la navegación a Libro
+                .ToListAsync();
+            return libros.Select(l => new LibrosDto()
+            {
+                IdL = l.IdLibroNavigation.IdL,
+                NombreL = l.IdLibroNavigation.NombreL,
+                Autor = l.IdLibroNavigation.Autor,
+                Descripcion = l.IdLibroNavigation.Descripcion,
+                Imagen = l.IdLibroNavigation.Imagen,
+                Foto = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + l.IdLibroNavigation.Imagen!),
+                Archivo = l.IdLibroNavigation.Archivo
+            }).ToList();
+
+        }
+        catch (SystemException)
+        {
+            return null!;
+        }
+    }
+    public async Task<bool> ExisteLibroEnLista(int idBook, int idUser)
+    {
+        return await _context.ListaUs.AnyAsync(l => l.IdLibro == idBook && l.IdUsuario == idUser);
+    }
+
 }

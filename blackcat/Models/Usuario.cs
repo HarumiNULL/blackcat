@@ -17,6 +17,8 @@ public partial class Usuario
 
     public string? Cont { get; set; }
 
+    public string? ContrasenaToken { get; set; }
+
     public virtual EstadoUsulibro? IdEstadoNavigation { get; set; }
 
     public virtual Rol? IdRolNavigation { get; set; }
@@ -25,4 +27,3 @@ public partial class Usuario
 
     public virtual ICollection<ListaU> ListaUs { get; set; } = new List<ListaU>();
 }
-

@@ -1,11 +1,8 @@
-﻿
+﻿@model blackcat.Models.viewModels.OlvideClaveViewModel
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
-}
-
-@{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Recuperación de contraseña";
 }
 
 <div class="d-flex justify-content-center align-items-center vh-99">
@@ -15,19 +12,14 @@
 
             <form method="post" asp-controller="User" asp-action="OlvideClave">
                 <div class="mb-3">
-                    <label  class="form-label">Correo</label>
-                    <input type="email" class="form-control" name="CorreoU" placeholder="Ingrese correo">
+                    <label asp-for="Correo" class="form-label">Correo</label>
+                    <input class="form-control" asp-for="Correo" placeholder="Ingrese correo registrado">
                 </div>
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Enviar</button>
                     <a href="/" class="btn btn-outline-secondary">Cancelar</a>
                 </div>
             </form>
-
-            <div class="text-center mt-3 position-relative">
-                <span>¿Ya tienes cuenta? </span><a asp-controller="User" asp-action="ViewLogin" class="text-primary">Inicia Sesión</a>
-                <img src="~/icons/gato.ico" alt="gatito" style="width: 80px; position: absolute; bottom: -180%; right:-20%;">
-            </div>
         </div>
  
     </div>

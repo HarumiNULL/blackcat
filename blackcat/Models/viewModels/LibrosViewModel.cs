@@ -48,5 +48,8 @@ public class LibrosViewModel
             }
             return ValidationResult.Success;
         }
+        // Solo si lo necesitas en la vista
+        public bool EnMiLista { get; set; }
+
     }
 }

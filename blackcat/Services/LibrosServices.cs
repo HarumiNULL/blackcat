@@ -121,4 +121,32 @@ public class LibrosServices
         };
         return await _librosRepository.AddBook(nuevoLibro);
     }
+    public async Task<List<LibrosViewModel>> GetLibrosPorUsuario(int idUsuario)
+    {
+        try
+        {
+            var librosDtos = await _librosRepository.GetLibrosPorUsuarioAsync(idUsuario);
+            var librosViewModels = librosDtos.Select(dto => new LibrosViewModel()
+            {
+                IdL = dto.IdL,
+                NombreL = dto.NombreL,
+                Autor = dto.Autor,
+                Descripcion = dto.Descripcion,
+                Imagen = dto.Imagen,
+                Foto = dto.Foto,
+                Archivo = dto.Archivo
+            }).ToList();
+
+            return librosViewModels;
+        }
+        catch (SystemException)
+        {
+            return null!;
+        }
+    }
+    public async Task<bool> ExisteLibroEnLista(int idBook, int idUser)
+    {
+        return await _librosRepository.ExisteLibroEnLista(idBook, idUser);
+    }
+
 }

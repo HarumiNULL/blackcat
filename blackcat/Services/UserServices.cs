@@ -54,12 +54,12 @@ namespace blackcat.Services
             bool contrasenaValida = BCrypt.Net.BCrypt.Verify(contra, usuario.Cont);
             UserDto user = new UserDto()
             {
-                IdRol =  usuario.IdRol,
+                IdRol = usuario.IdRol,
                 NombreU = usuario.NombreU,
                 CorreoU = usuario.CorreoU,
                 IdU = usuario.IdU,
-                IdEstado =  usuario.IdEstado,
-                Rol =  usuario.IdRolNavigation?.Nombre,
+                IdEstado = usuario.IdEstado,
+                Rol = usuario.IdRolNavigation?.Nombre,
             };
             return contrasenaValida ? user : null;
         }
@@ -146,19 +146,41 @@ namespace blackcat.Services
                 return false;
             }
         }
-    public async Task<bool> OlvideClave(string email)
-    {
-        try
+
+        public async Task<bool> OlvideClave(string email)
         {
-            // OlvideClaveViewModel model = await _userRepository.CreateRecoveryToken(email);
-            // EmailService em = new EmailService();
-            // await em.SendForgotPasswordEmail(model.Email!, model.Name!, model.Token!);
-            return true;
+            try
+            {
+                OlvideClaveDto model = await _userRepository.CreateRecoveryToken(email);
+                EmailService em = new EmailService();
+                await em.EnviarCorreoRecuperacion(model.Email!, model.Name!, model.Token!);
+                return true;
+            }
+            catch (SystemException)
+            {
+                return false;
+            }
         }
-        catch (SystemException)
+
+        public async Task<bool> ExisteTokenRecuperacion(string token)
         {
-            return false;
+            return await _userRepository.ExisteTokenAsync(token);
         }
-    }
+
+        public async Task<bool> CambiarContrasena(ResetPasswordViewModel model)
+        {
+            
+            try
+            {
+                var hash = BCrypt.Net.BCrypt.HashPassword(model.Clave);
+                var result = await _userRepository
+                    .ResetPasswordAsync(model.Token!, hash);
+                return result;
+            }
+            catch (SystemException)
+            {
+                return false;
+            }
+        }
     }
 }
