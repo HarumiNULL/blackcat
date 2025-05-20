@@ -1,0 +1,38 @@
+﻿@model List<blackcat.Models.Dtos.LibrosDto>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+
+<h2>Resultados de la búsqueda</h2>
+
+@if (!Model.Any())
+{
+    <p>No se encontraron libros.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var libro in Model)
+        {
+            <a asp-controller="Libros" asp-action="View" asp-route-id="@libro.IdL"
+               class="list-group-item list-group-item-action">
+                <div class="d-flex align-items-start">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(libro.Foto!)"
+                         alt="Portada"
+                         style="width: 100px; height: 140px; object-fit: cover; margin-right: 15px;"/>
+
+                    <div>
+                        <h5 class="mb-1">@libro.NombreL</h5>
+                        <small class="text-muted">@libro.Autor</small>
+                        <p class="mb-1">@libro.Descripcion</p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}
+

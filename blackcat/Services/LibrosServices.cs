@@ -149,4 +149,9 @@ public class LibrosServices
         return await _librosRepository.ExisteLibroEnLista(idBook, idUser);
     }
 
+    public async Task<List<LibrosDto>> BuscarLibrosAsync(string  NombreL)
+    {
+        return await _librosRepository.BuscarLibrosAsync(NombreL);
+    }
+    
 }

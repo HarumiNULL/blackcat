@@ -102,5 +102,11 @@ public class LibrosController : Controller
         TempData["ToastType"] = "error";
         return RedirectToAction("View", new { id = idBook });
     }
+    
+    public async Task<IActionResult> Buscar(string nombreLibro)
+    {
+        var libros = await _librosServices.BuscarLibrosAsync(nombreLibro);
+        return View("ViewListBooks", libros); // o el nombre de tu vista
+    }
 
 }

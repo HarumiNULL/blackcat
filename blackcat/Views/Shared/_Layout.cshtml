@@ -68,14 +68,15 @@
                 </ul>
                 
                 <!-- Buscador centrado -->
-                <div class="search-bar w-50">
+                <form asp-controller="Libros" asp-action="Buscar" method="get" class="search-bar w-50">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-terciary-custom" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon">
-                        <button class="btn btn-outline-secondary bg-terciary-custom" type="button" id="search-addon">
+                        <input type="text" name="nombreLibro" class="form-control bg-terciary-custom" placeholder="Buscar..." aria-label="Search" aria-describedby="search-addon">
+                        <button type="submit" class="btn btn-outline-secondary bg-terciary-custom" id="search-addon">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
-                </div>
+                </form>
+
                 
                 <!-- Botones a la derecha -->
                 @if (Context.User.Identity is { IsAuthenticated: false })
