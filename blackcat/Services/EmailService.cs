@@ -10,13 +10,13 @@ public class EmailService
     public static async Task EnviarCorreo(string email, string subject, string body)
     {
         var e = new MimeMessage();
-        e.From.Add(MailboxAddress.Parse("OnlyPan.Notify@gmail.com"));
+        e.From.Add(MailboxAddress.Parse("oficial7blackcat@gmail.com"));
         e.To.Add(MailboxAddress.Parse(email));
         e.Subject = subject;
         e.Body = new TextPart(TextFormat.Html) { Text = body };
         using var smtp = new SmtpClient();
         await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        await smtp.AuthenticateAsync("OnlyPan.Notify@gmail.com", "vogmdjftudbqcrov");
+        await smtp.AuthenticateAsync("oficial7blackcat@gmail.com", "jnhdxrxrixqvalen");
         await smtp.SendAsync(e);
         await smtp.DisconnectAsync(true);
     }
