@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using blackcat.Models;
+using blackcat.Models.Dtos;
 using blackcat.Models.viewModels;
 using blackcat.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -109,4 +110,36 @@ public class LibrosController : Controller
         return View("ViewListBooks", libros); // o el nombre de tu vista
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EliminarDeLista([FromBody] LibrosDto dto)
+    {
+        try
+        {
+            int idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+            if (idUsuario == 0)
+            {
+                return Json(new { success = false, message = "Usuario no autenticado" });
+            }
+
+            var resultado = await _librosServices.RemoveLibroDeLista(dto.IdL, idUsuario);
+
+            if (resultado)
+            {
+                return Json(new { success = true, message = "Libro eliminado correctamente" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "No se pudo eliminar el libro" });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error interno: " + ex.Message);
+            return Json(new { success = false, message = "Error en el servidor: " + ex.Message });
+        }
+    }
+
 }
+

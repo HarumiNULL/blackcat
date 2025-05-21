@@ -86,6 +86,8 @@ public class UserRepository
             return null!;
         }
     }
+    
+    
 
     public async Task<Usuario?> GetUserByIdAsync(int id)
     {

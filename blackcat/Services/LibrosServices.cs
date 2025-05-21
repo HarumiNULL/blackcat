@@ -75,6 +75,11 @@ public class LibrosServices
         return result;
     }
     
+    public async Task<bool> RemoveLibroDeLista(int idLibro, int idUsuario)
+    {
+            return await _librosRepository.RemoveBookFromList(idLibro, idUsuario);
+    }
+    
     public async Task<bool> RegistrarLibroAsync(LibrosViewModel request, int rol = 3)
     {
         if (request.ArchivoForm == null || request.ArchivoForm.Length < 1
@@ -144,6 +149,8 @@ public class LibrosServices
             return null!;
         }
     }
+    
+
     public async Task<bool> ExisteLibroEnLista(int idBook, int idUser)
     {
         return await _librosRepository.ExisteLibroEnLista(idBook, idUser);

@@ -1,13 +1,15 @@
 ﻿@model List<blackcat.Models.viewModels.LibrosViewModel>
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Mis Libros";
     Layout = "_Layout";
 }
 
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
 <div class="container mt-4">
+    @Html.AntiForgeryToken()
+
     <h3>Mis Libros Guardados</h3>
 
     @if (Model != null && Model.Any())
@@ -15,25 +17,127 @@
         <div class="list-group">
             @foreach (var libro in Model)
             {
-                <a asp-controller="Libros" asp-action="View" asp-route-id="@libro.IdL"
-                   class="list-group-item list-group-item-action">
-                    <div class="d-flex align-items-start">
-                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(libro.Foto!)"
-                             alt="Portada"
-                             style="width: 100px; height: 140px; object-fit: cover; margin-right: 15px;"/>
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <a asp-controller="Libros" asp-action="View" asp-route-id="@libro.IdL" class="text-decoration-none flex-grow-1">
+                            <div class="d-flex align-items-start">
+                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(libro.Foto!)"
+                                     alt="Portada"
+                                     style="width: 100px; height: 140px; object-fit: cover; margin-right: 15px;"/>
 
-                        <div>
-                            <h5 class="mb-1">@libro.NombreL</h5>
-                            <small class="text-muted">@libro.Autor</small>
-                            <p class="mb-1">@libro.Descripcion</p>
-                        </div>
+                                <div>
+                                    <h5 class="mb-1">@libro.NombreL</h5>
+                                    <small class="text-muted">@libro.Autor</small>
+                                    <p class="mb-1">@libro.Descripcion</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Botón de eliminar -->
+                        <button class="btn btn-outline-danger btn-sm ms-3 delete-btn"
+                                data-libro-id="@libro.IdL"
+                                title="Eliminar de mi lista">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
-                </a>
+                </div>
             }
         </div>
     }
     else
     {
-        <p>No tienes libros en tu lista.</p>
+        <div class="alert alert-info">
+            No tienes libros en tu lista.
+        </div>
     }
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Configuración inicial de Toastr
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000"
+        };
+
+        document.querySelectorAll(".delete-btn").forEach(function (btn) {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                const id = this.getAttribute("data-libro-id");
+                const libroNombre = this.getAttribute("data-libro-nombre"); // Añade este atributo a tus botones
+
+                // Diálogo de confirmación mejorado con SweetAlert2
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar',
+                    reverseButtons: true,
+                    backdrop: `
+                        rgba(0,0,0,0.4)
+                        url("/images/trash-icon.png")
+                        left top
+                        no-repeat
+                    `
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Mostrar loader mientras se procesa
+                        Swal.fire({
+                            title: 'Eliminando...',
+                            html: 'Por favor espera',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        fetch(`/Libros/EliminarDeLista`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value
+                            },
+                            body: JSON.stringify({ idL: id })
+                        })
+                        .then(res => {
+                            if (!res.ok) {
+                                throw new Error(res.statusText);
+                            }
+                            return res.json();
+                        })
+                        .then(data => {
+                            Swal.close();
+                            if (data.success) {
+                                // Eliminar el elemento de la lista
+                                this.closest(".list-group-item").remove();
+                                
+                                // Mostrar notificación toast de éxito
+                                toastr.success(data.message, 'Éxito');
+                            } else {
+                                // Mostrar notificación toast de error
+                                toastr.error(data.message, 'Error');
+                            }
+                        })
+                        .catch(err => {
+                            Swal.close();
+                            console.error("Error en la solicitud:", err);
+                            toastr.error("Error al eliminar el libro", 'Error');
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
+

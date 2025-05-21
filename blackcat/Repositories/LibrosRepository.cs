@@ -103,6 +103,32 @@ public class LibrosRepository
             return false;
         }
     }
+    
+    public async Task<bool> RemoveBookFromList(int idBook, int idUser)
+    {
+        try
+        {
+            // Buscar el registro específico en la lista
+            var listItem = await _context.ListaUs
+                .FirstOrDefaultAsync(l => l.IdLibro == idBook && l.IdUsuario == idUser);
+
+            if (listItem == null)
+                return false; // No existe en la lista
+
+            // Eliminar el registro
+            _context.ListaUs.Remove(listItem);
+            await _context.SaveChangesAsync();
+        
+            return true; // Eliminación exitosa
+        }
+        catch (Exception ex) 
+        {
+            // Log del error 
+            Console.WriteLine($"Error al eliminar libro de la lista: {ex.Message}");
+            return false;
+        }
+    }
+    
 
     public async Task<bool> AddBook(LibrosDto librosDto)
     {
