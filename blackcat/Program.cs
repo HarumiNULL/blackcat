@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ReportService>();
+
 
 
 builder.Services.AddDbContext<BlackcatDbContext>();

@@ -1,5 +1,6 @@
 ﻿using blackcat.Models;
 using blackcat.Models.viewModels;
+using blackcat.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using blackcat.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,12 +14,16 @@ public class AdminController : Controller
     private readonly UserServices _userService;
     private readonly LibrosServices _librosService;
     private readonly IConfiguration _config;
+    private readonly ReportService _reportService;
+    private readonly BusquedaRepository _busquedaRepository;
     public AdminController(BlackcatDbContext context, IConfiguration config)
     {
         _context = context;
         _config = config;
         _userService = new UserServices(_context);
         _librosService = new LibrosServices(_context, _config);
+        _reportService = new ReportService(_context);
+        _busquedaRepository = new BusquedaRepository(_context);
     }
 
     // GET
@@ -133,4 +138,12 @@ public class AdminController : Controller
         }
         return RedirectToAction("ViewListUser");
     }
+    
+    public async Task<IActionResult> DescargarReporteBusquedas()
+    {
+        var busquedas = await _busquedaRepository.ObtenerBusquedasAsync();
+        var pdf = _reportService.GenerarReporteBusquedas(busquedas);
+        return File(pdf, "application/pdf", "ReporteBusquedas.pdf");
+    }
+
 }
