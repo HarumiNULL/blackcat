@@ -6,6 +6,7 @@ using blackcat.Repositories;
 using blackcat.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace blackcat.Controllers
 {
@@ -13,9 +14,11 @@ namespace blackcat.Controllers
     {
         private readonly UserServices _userService;
         private readonly LibrosServices _librosService;
+        private readonly BlackcatDbContext _context;
 
         public UserController(BlackcatDbContext context, IConfiguration config)
         {
+            _context = context;
             _userService = new UserServices(context);
             _librosService = new LibrosServices(context, config);
         }
@@ -157,6 +160,18 @@ namespace blackcat.Controllers
             TempData["ToastMessage"] = "Contraseña actualizada";
             TempData["ToastType"] = "success";
             return View("ViewLogin");
+        }
+        
+        public IActionResult ViewForoUser()
+        {
+            var mensajes = _context.Informacions
+                .Include(i => i.IdUsuarioNavigation)
+                .Where(i => i.IdTipoinfo == 3)
+                .OrderBy(i => i.FechaI)
+                .ToList();
+
+            return View("~/Views/User/ViewForoUser.cshtml", mensajes);
+
         }
 
         public async Task<IActionResult> ViewMyList()

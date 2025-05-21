@@ -63,7 +63,23 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Catalogo">Catálogo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Foro" asp-action="Index">Foro</a>
+                        @{
+                            var foroRol = Context.User.FindFirst(ClaimTypes.Role)?.Value;
+                            
+                            if (foroRol == "Publico")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="User" asp-action="ViewForoUser">Foro</a>
+                                </li>
+                            }
+                            else if (foroRol == "Moderador")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Moderator" asp-action="ViewForoMod">Foro</a>
+                                </li>
+                                
+                            }
+                        }
                     </li>
                 </ul>
                 

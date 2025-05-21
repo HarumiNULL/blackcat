@@ -1,0 +1,39 @@
+@model List<blackcat.Models.Informacion>
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Foro";
+    var currentUserId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary-custom text-center fw-bold">
+            Foro de Usuarios
+        </div>
+        <div class="card-body forum-posts p-4" style="height: 70vh; overflow-y: auto;">
+            @foreach (var mensaje in Model)
+            {
+                var esPropio = mensaje.IdUsuario.ToString() == currentUserId;
+                <div class="d-flex mb-4 @(esPropio ? "justify-content-end" : "justify-content-start")">
+                    <div class="card p-3" style="max-width: 75%; background-color: @(esPropio ? "#A1D7D0" : "#f8f9fa")">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-semibold">@mensaje.IdUsuarioNavigation.NombreU</span>
+                            <small class="text-muted">@mensaje.FechaI.ToString("g")</small>
+                        </div>
+                        <div class="mt-2">
+                            @mensaje.Descrip
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <form asp-controller="Foro" asp-action="Publicar" method="post">
+                <div class="input-group">
+                    <input type="text" name="contenido" class="form-control" placeholder="Escribe tu mensaje..." required />
+                    <button class="btn btn-secondary bg-primary-custom text-white" type="submit">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

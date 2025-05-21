@@ -1,5 +1,6 @@
 using blackcat.Models;
 using blackcat.Services;
+using blackcat.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<ModServices>();
 builder.Services.AddScoped<ReportService>();
 
 

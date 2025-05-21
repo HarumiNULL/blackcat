@@ -19,7 +19,7 @@
       <Folder Include="Views\Foro\" />
       <Folder Include="wwwroot\staticFiles\anuncios\" />
       <Folder Include="wwwroot\staticFiles\images\" />
-      <Folder Include="wwwroot\staticFiles\books\" />
+      <Folder Include="wwwroot\staticFiles\libros\" />
     </ItemGroup>
     
     <ItemGroup>

@@ -22,7 +22,7 @@ public partial class Usuario
     public virtual EstadoUsulibro? IdEstadoNavigation { get; set; }
 
     public virtual Rol? IdRolNavigation { get; set; }
-
+    
     public virtual ICollection<Informacion> Informacions { get; set; } = new List<Informacion>();
 
     public virtual ICollection<ListaU> ListaUs { get; set; } = new List<ListaU>();

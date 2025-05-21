@@ -13,7 +13,10 @@ public partial class Informacion
 
     public string? Descrip { get; set; }
 
-    public DateTime? FechaI { get; set; }
+    public DateTime FechaI { get; set; }
+    
+    public bool estadoC { get; set; }
+
 
     public virtual Tipoinfo? IdTipoinfoNavigation { get; set; }
 
