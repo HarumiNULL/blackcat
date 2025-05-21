@@ -42,6 +42,13 @@ public class LibrosController : Controller
     {
         // var user = HttpContext.User.Claims.First().Value;
         var libro = await _librosServices.GetLibro(id);
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            int idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            bool estaEnLista = await _librosServices.ExisteLibroEnLista(id, idUsuario);
+            ViewData["estaEnLista"] = estaEnLista;
+        }
+
         return View(libro);
     }
 

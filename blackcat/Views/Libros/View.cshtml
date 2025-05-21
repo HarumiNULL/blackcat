@@ -22,7 +22,10 @@
             @if (Context.User.Identity is { IsAuthenticated: true })
             {
                 <div class="btn-group mt-3" role="group">
-                    <a class="btn btn-danger" asp-action="AddBookList" asp-route-idBook="@Model.IdL">Agregar a "Mi lista"</a>
+                    @if (!ViewBag.estaEnLista)
+                    {
+                        <a class="btn btn-danger" asp-action="AddBookList" asp-route-idBook="@Model.IdL">Agregar a "Mi lista"</a>
+                    }
                     <a class="btn btn-warning" asp-action="ReadArchive" asp-route-nombreArchivo="@Model.Archivo">Leer</a>
                 </div>
                 
