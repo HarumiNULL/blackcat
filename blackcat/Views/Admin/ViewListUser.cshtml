@@ -1,6 +1,6 @@
 ﻿@model List<blackcat.Models.viewModels.UserViewModel>
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Lista de Usuarios";
     Layout = "_Layout";
 }
 
@@ -35,7 +35,12 @@
                 Opciones
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">Editar</a></li>
+                  <li>
+                    <a class="dropdown-item" 
+                       asp-controller="Admin" 
+                       asp-action="EditarUsuario" 
+                       asp-route-id="@user.IdU">Editar</a>
+                  </li>
                 <li>
                   @if (user.Estado == "Bloqueado")
                   {

@@ -1,4 +1,4 @@
-﻿
+﻿@model blackcat.Models.viewModels.UserViewModel
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -15,18 +15,18 @@
 
             <form method="post" asp-controller="User" asp-action="Registro">
                 <div class="mb-3">
-                    <label  class="form-label">Nombre Usuario</label>
-                    <input type="text" class="form-control" name="NombreU" placeholder="Ingrese nombre">
+                    <label  asp-for="NombreU" class="form-label"></label>
+                    <input class="form-control" asp-for="NombreU" placeholder="Ingrese nombre">
                 </div>
 
                 <div class="mb-3">
-                    <label  class="form-label">Correo</label>
-                    <input type="email" class="form-control" name="CorreoU" placeholder="Ingrese correo">
+                    <label  class="form-label" asp-for="CorreoU"></label>
+                    <input  class="form-control" asp-for="CorreoU" placeholder="Ingrese correo">
                 </div>
 
                 <div class="mb-3">
-                    <label  class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" name="Cont" placeholder="Ingrese contraseña">
+                    <label  class="form-label" asp-for="Cont"></label>
+                    <input class="form-control" asp-for="Cont" placeholder="Ingrese contraseña">
                 </div>
 
                 <div class="d-grid gap-2">

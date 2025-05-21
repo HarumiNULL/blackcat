@@ -1,0 +1,48 @@
+﻿@model blackcat.Models.viewModels.UserViewModel
+@{
+    ViewBag.Title = "Editar Usuario";
+    Layout = "_Layout";
+}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="p-4 rounded-4" style="background-color: #a8d9d2; width: 80%; max-width: 480px;">
+        <div class="bg-white p-4 rounded-3 shadow-sm">
+            <h2 class="text-center mb-4" style="font-weight: bold;">Editar Usuario</h2>
+
+            <form method="post" asp-controller="Admin" asp-action="EditarUsuario">
+                @* Campo oculto para el ID del usuario *@
+                <input type="hidden" asp-for="IdU" />
+                <input type="hidden" asp-for="IdEstado" />
+
+                <div class="mb-3">
+                    <label asp-for="NombreU" class="form-label"></label>
+                    <input asp-for="NombreU" class="form-control" placeholder="Ingrese nombre" />
+                    <span asp-validation-for="NombreU" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CorreoU" class="form-label"></label>
+                    <input asp-for="CorreoU" type="email" class="form-control" placeholder="Ingrese correo" />
+                    <span asp-validation-for="CorreoU" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="IdRol" class="form-label">Tipo Rol</label>
+                    <select asp-for="IdRol" class="form-control">
+                        <option value="1">Administrador</option>
+                        <option value="2">Moderador</option>
+                        <option value="3">Usuario</option>
+                    </select>
+                    <span asp-validation-for="IdRol" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Editar</button>
+                </div>
+            </form>
+
+            <div class="text-center mt-3 position-relative">
+                <img src="~/icons/gato.ico" alt="gatito" style="width: 80px; position: absolute; bottom: -190%; right:-20%;">
+            </div>
+        </div>
+    </div>
+</div>

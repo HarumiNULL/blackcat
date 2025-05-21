@@ -103,11 +103,13 @@ namespace blackcat.Controllers
             {
                 await _modServices.BorrarNota(idUsuario);
                 TempData["Mensaje"] = "Nota eliminada correctamente.";
+                TempData["ToastType"] = "success";
             }
             else if (accion == "guardar")
             {
                 await _modServices.GuardarNota(idUsuario, contenido);
                 TempData["Mensaje"] = "Nota guardada correctamente.";
+                TempData["ToastType"] = "success";
             }
 
             return RedirectToAction("PagMode");

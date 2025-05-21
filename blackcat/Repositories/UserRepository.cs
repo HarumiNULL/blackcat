@@ -28,15 +28,21 @@ public class UserRepository
             .AnyAsync(u => u.NombreU == nombreUsuario);
     }
 
-    public async Task<Usuario> RegistrarUsuarioAsync(Usuario usuario)
+    public async Task<Usuario?> RegistrarUsuarioAsync(UserDto usuario)
     {
-        usuario.Cont = BCrypt.Net.BCrypt.HashPassword(usuario.Cont);
-        usuario.IdEstado = 1; // Estado activo por defecto
+        var user = new Usuario()
+        {
+            NombreU = usuario.NombreU,
+            CorreoU = usuario.CorreoU,
+            IdRol = usuario.IdRol,
+            IdEstado = usuario.IdEstado,
+            Cont = usuario.Cont
+        };
 
-        _context.Usuarios.Add(usuario);
+        _context.Usuarios.Add(user);
         await _context.SaveChangesAsync();
 
-        return usuario;
+        return user;
     }
 
 
@@ -89,14 +95,24 @@ public class UserRepository
     
     
 
-    public async Task<Usuario?> GetUserByIdAsync(int id)
+    public async Task<UserDto?> GetUserByIdAsync(int id)
     {
         try
         {
-            return await _context.Usuarios
+            var user = await _context.Usuarios
                 .Include(u => u.IdEstadoNavigation)
                 .Include(u => u.IdRolNavigation)
                 .FirstOrDefaultAsync(u => u.IdU == id);
+            return new UserDto()
+            {
+                CorreoU = user.CorreoU,
+                NombreU = user.NombreU,
+                IdEstado = user.IdEstado,
+                IdRol = user.IdRol,
+                IdU = user.IdU,
+                Estado = user.IdEstadoNavigation.Estado,
+                Rol = user.IdRolNavigation.Nombre
+            };
         }
         catch (SystemException)
         {
@@ -185,5 +201,21 @@ public class UserRepository
         {
             return false;
         }
+    }
+    
+    public async Task<Usuario?> ObtenerUsuarioPorIdAsync(int id)
+    {
+        return await _context.Usuarios.FindAsync(id);
+    }
+
+    public async Task<bool> UpdateUser(UserDto user)
+    {
+        var u = await _context.Usuarios.FindAsync(user.IdU);
+        u.NombreU = user.NombreU;
+        u.CorreoU = user.CorreoU;
+        u.IdRol = user.IdRol;
+        u.IdEstado = user.IdEstado;
+        _context.Usuarios.Update(u);
+        return await _context.SaveChangesAsync() > 0;
     }
 }

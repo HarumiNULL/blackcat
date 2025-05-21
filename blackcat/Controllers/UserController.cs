@@ -30,7 +30,7 @@ namespace blackcat.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Registro(Usuario usuario)
+        public async Task<IActionResult> Registro(UserViewModel usuario)
         {
             var resultado = await _userService.RegistrarUsuarioAsync(usuario);
             if (resultado == "Usuario registrado correctamente.")
@@ -52,7 +52,7 @@ namespace blackcat.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> ViewLogin(Usuario usuario)
+        public async Task<IActionResult> ViewLogin(LoginViewModel usuario)
         {
             var user = await _userService.IniciarSesionAsync(usuario.NombreU, usuario.Cont);
 
@@ -69,7 +69,8 @@ namespace blackcat.Controllers
                 TempData["ToastType"] = "error";
                 return View();
             }
-
+            TempData["ToastMessage"] = "Inicio de sesion exitoso!";
+            TempData["ToastType"] = "success";
             var result = await _userService.CreateCredentials(user, false, HttpContext);
 
             string? rol = user.Rol;

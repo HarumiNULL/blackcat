@@ -32,25 +32,25 @@ namespace blackcat.Services
                 .ToListAsync();
         }
         
-        public async Task<string> RegistrarUsuarioAsync(Usuario request, int rol = 3)
+        public async Task<string> RegistrarUsuarioAsync(UserViewModel request, int rol = 3)
         {
-            var existe = await _context.Usuarios.AnyAsync(u => u.CorreoU == request.CorreoU);
+            var existe = request.CorreoU != null && await _userRepository.ExisteCorreoAsync(request.CorreoU);
             if (existe)
                 return "Este correo ya está registrado.";
 
-            var nuevoUsuario = new Usuario
+            var nuevoUsuario = new UserDto()
             {
                 NombreU = request.NombreU,
                 CorreoU = request.CorreoU,
-                Cont = BCrypt.Net.BCrypt.HashPassword(request.Cont),
                 IdRol = rol,
-                IdEstado = 1
+                IdEstado = 1,
+                Cont = BCrypt.Net.BCrypt.HashPassword(request.Cont)
             };
-
-            _context.Usuarios.Add(nuevoUsuario);
-            await _context.SaveChangesAsync();
-
-            return "Usuario registrado correctamente.";
+            var result = await _userRepository.RegistrarUsuarioAsync(nuevoUsuario);
+            if (result != null)
+                return "Usuario registrado correctamente.";
+            else
+                return "Usuario no ha sido registrado correctamente";
         }
 
         public async Task<UserDto?> IniciarSesionAsync(string nombre, string contra)
@@ -190,5 +190,34 @@ namespace blackcat.Services
                 return false;
             }
         }
+
+        public async Task<UserViewModel?> ObtenerUsuarioAsync(int id)
+        {
+            var user = await _userRepository.GetUserByIdAsync(id);
+            return new UserViewModel()
+            {
+                CorreoU = user.CorreoU,
+                NombreU = user.NombreU,
+                IdEstado = user.IdEstado,
+                IdRol = user.IdRol,
+                IdU = user.IdU,
+                Estado = user.Estado,
+                Rol = user.Rol
+            };
+        }
+
+        public async Task<bool> ModificarUsuarioAsync(UserViewModel usuarioModificado)
+        {
+            var user = new UserDto()
+            {
+                IdU = usuarioModificado.IdU,
+                CorreoU = usuarioModificado.CorreoU,
+                NombreU = usuarioModificado.NombreU,
+                IdRol = usuarioModificado.IdRol,
+                IdEstado = usuarioModificado.IdEstado,
+            };
+            return await _userRepository.UpdateUser(user);
+        }
+
     }
 }

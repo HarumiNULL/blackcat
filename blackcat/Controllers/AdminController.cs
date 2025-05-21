@@ -42,6 +42,43 @@ public class AdminController : Controller
         return View(nota ?? new InformacionDto());
     }
     
+
+    public async Task<IActionResult> EditarUsuario(int id)
+    {
+        var usuario = await _userService.ObtenerUsuarioAsync(id);
+        if (usuario == null)
+        {
+            TempData["Error"] = "Usuario no encontrado.";
+            return RedirectToAction("ViewListUser");
+        }
+
+        return View(usuario); // Asegúrate que la vista se llama EditarUsuario.cshtml
+    }
+// POST: Guardar cambios
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditarUsuario(UserViewModel usuario)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(usuario); // Muestra los errores de validación
+        }
+
+        var resultado = await _userService.ModificarUsuarioAsync(usuario);
+        if (resultado)
+        {
+            TempData["ToastMessage"] = "Usuario editado correctamente.";
+            TempData["ToastType"] = "success";
+        }
+        else
+        {
+            TempData["ToastMessage"] = "No se pudo editar el usuario.";
+            TempData["ToastType"] = "error";
+        }
+
+        return RedirectToAction("ViewListUser");
+    }
+
     
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -52,12 +89,14 @@ public class AdminController : Controller
         if (accion == "borrar")
         {
             await _adminServices.BorrarNota(idUsuario);
-            TempData["Mensaje"] = "Nota eliminada correctamente.";
+            TempData["ToastMessage"] = "Nota eliminada correctamente.";
+            TempData["ToastType"] = "success";
         }
         else if (accion == "guardar")
         {
             await _adminServices.GuardarNota(idUsuario, contenido);
-            TempData["Mensaje"] = "Nota guardada correctamente.";
+            TempData["ToastMessage"] = "Nota guardada correctamente.";
+            TempData["ToastType"] = "success";
         }
 
         return RedirectToAction("PagAdmin");
@@ -83,7 +122,7 @@ public class AdminController : Controller
 
     [ValidateAntiForgeryToken]
     [HttpPost]
-    public async Task<IActionResult> ViewRegmod(Usuario usuario)
+    public async Task<IActionResult> ViewRegmod(UserViewModel usuario)
     {
         var resultado = await _userService.RegistrarUsuarioAsync(usuario,2);
         if (resultado == "Usuario registrado correctamente.")
@@ -92,8 +131,8 @@ public class AdminController : Controller
             TempData["ToastType"] = "success";
             return View();
         }
-
-        ViewBag.Error = resultado;
+        TempData["ToastMessage"] = resultado;
+        TempData["ToastType"] = "error";
         return View();
     }
     public async Task<IActionResult> ViewBookList(int pg = 1)
@@ -133,7 +172,11 @@ public class AdminController : Controller
             return View();
         }
         TempData["ToastMessage"] = "¡Registro fallido!";
-        TempData["ToastType"] = "success";
+        TempData["ToastType"] = "error";
+        return View();
+    }
+    public async Task<IActionResult> ViewEditBook()
+    {
         return View();
     }
     
@@ -145,6 +188,7 @@ public class AdminController : Controller
         if (!resultado)
         {
             TempData["Error"] = "No se pudo bloquear al usuario";
+            TempData["ToastType"] = "error";
         }
         return RedirectToAction("ViewListUser");
     }
@@ -157,6 +201,7 @@ public class AdminController : Controller
         if (!resultado)
         {
             TempData["Error"] = "No se pudo desbloquear al usuario";
+            TempData["ToastType"] = "error";
         }
         return RedirectToAction("ViewListUser");
     }
@@ -169,6 +214,7 @@ public class AdminController : Controller
         if (!resultado)
         {
             TempData["Error"] = "No se pudo eliminar al usuario";
+            TempData["ToastType"] = "error";
         }
         return RedirectToAction("ViewListUser");
     }

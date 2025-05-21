@@ -13,6 +13,7 @@ public class UserDto
     public string? CorreoU { get; set; }
     public string? Estado { get; set; }
     public string? Rol { get; set; }
+    public string? Cont { get; set; }
     
     public virtual ICollection<ListaU> ListaUsu { get; set; } = new List<ListaU>();
     
