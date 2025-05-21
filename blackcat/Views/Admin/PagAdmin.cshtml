@@ -29,8 +29,23 @@
                 <li><a class="dropdown-item" asp-action="ViewBookList">Editar Libro</a></li>
             </ul>
         </div>
-
+        
         <!-- Botón 3 -->
+        <div class="dropdown">
+            <button class="bg-secondary-custom dropdown-toggle btn-opciones-grande" type="button" id="dropdownMenu4" data-bs-toggle="dropdown" aria-expanded="false">
+                Revisiones
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                <li>
+                    <a class="dropdown-item" href="@Url.Action("ApproveRulesAdmin", "Admin")"> Reglas</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Anuncios</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Botón 4 -->
         <div class="dropdown">
             <button class="bg-secondary-custom dropdown-toggle btn-opciones-grande" type="button" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false">
                 Reportes
@@ -40,6 +55,7 @@
                 <li><a class="dropdown-item" asp-action="DescargarReporteListaLibros">Reporte libros disponibles</a></li>
             </ul>
         </div>
+
     </div>
 
     <!-- Columna derecha: Notas -->

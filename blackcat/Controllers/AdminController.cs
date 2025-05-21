@@ -18,9 +18,11 @@ public class AdminController : Controller
     private readonly LibrosServices _librosService;
     private readonly IConfiguration _config;
     private readonly ReportService _reportService;
+    private readonly ModServices _modServices;
     private readonly BusquedaRepository _busquedaRepository;
     public AdminController(BlackcatDbContext context, IConfiguration config)
     {
+        _modServices = new ModServices(context);
         _context = context;
         _config = config;
         _userService = new UserServices(_context);
@@ -111,7 +113,10 @@ public class AdminController : Controller
     {
         return View();
     }
-
+    public async Task<IActionResult> ApproveRulesAdmin()
+    {
+        return await ReglasPendientes();
+    }
     [ValidateAntiForgeryToken]
     [HttpPost]
     public async Task<IActionResult> ViewRegBook(LibrosViewModel model)
@@ -182,5 +187,37 @@ public class AdminController : Controller
         return File(pdf, "application/pdf", "ReporteListaLibros.pdf");
     }
     
+    public async Task<IActionResult> ReglasPendientes()
+    {
+        var reglas = await _adminServices.ReglasPendientesAsync(); 
+        return View("ApproveRulesAdmin", reglas); 
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AprobarRegla(int id)
+    {
+        var regla = await _modServices.ObtenerReglaPorIdAsync(id);
+        if (regla == null)
+            return NotFound();
+
+        regla.estadoC = true; // aprobar
+        await _modServices.ActualizarReglaAsync(regla);
+
+        TempData["ToastMessage"] = "Regla aprobada correctamente.";
+        TempData["ToastType"] = "success";
+
+        return RedirectToAction("ApproveRulesAdmin"); // o la vista que muestra las reglas pendientes
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RechazarRegla(int id)
+    {
+        await _modServices.RechazarReglaAsync(id);
+
+        TempData["ToastMessage"] = "Regla rechazada correctamente.";
+        TempData["ToastType"] = "danger";
+
+        return RedirectToAction("ApproveRulesAdmin");
+    }
     
 }

@@ -1,6 +1,6 @@
 using blackcat.Models;
-using blackcat.Models.Dtos;
 using blackcat.Repositories;
+using blackcat.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace blackcat.Services
@@ -46,6 +46,61 @@ namespace blackcat.Services
             await _context.SaveChangesAsync();
             return true;
         }
+        
+        public async Task<bool> RedactarReglaAsync(int idUsuario, string contenido)
+        {
+            var nuevaRegla = new Informacion
+            {
+                IdUsuario = idUsuario,
+                Descrip = contenido,
+                FechaI = DateTime.Now,
+                IdTipoinfo = 1, // tipo regla
+                estadoC = false
+            };
+
+            _context.Informacions.Add(nuevaRegla);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> EliminarReglaAsync(int id)
+        {
+            var regla = await _context.Informacions
+                .FirstOrDefaultAsync(i => i.IdInfo== id && i.IdTipoinfo == 1);
+
+            if (regla == null) return false;
+
+            _context.Informacions.Remove(regla);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<List<Informacion>> ObtenerReglasAsync()
+        {
+            return await _context.Informacions
+                .Where(i => i.IdTipoinfo == 1 && i.estadoC == true)  // Solo reglas aprobadas (estadoC = true)
+                .OrderBy(i => i.FechaI)
+                .ToListAsync();
+        }
+        public async Task<Informacion?> ObtenerReglaPorIdAsync(int id)
+        {
+            return await _context.Informacions.FirstOrDefaultAsync(r => r.IdInfo == id && r.IdTipoinfo == 1);
+        }
+
+        public async Task ActualizarReglaAsync(Informacion regla)
+        {
+            _context.Informacions.Update(regla);
+            await _context.SaveChangesAsync();
+        }
+        public async Task RechazarReglaAsync(int id)
+        {
+            var regla = await _context.Informacions.FindAsync(id);
+            if (regla != null)
+            {
+                _context.Informacions.Remove(regla);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        
         public Task<InformacionDto?> ObtenerNota(int idUsuario) =>
             _repository.ObtenerNotaAsync(idUsuario);
 

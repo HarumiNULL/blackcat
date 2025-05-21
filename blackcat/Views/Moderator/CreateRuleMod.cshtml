@@ -1,0 +1,19 @@
+@model List<Informacion>
+@{
+     ViewData["Title"] = "Redactar Regla";
+     Layout = "~/Views/Shared/_Layout.cshtml";
+ }
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📝 Redactar Nueva Regla del Foro</h2>
+
+    <div class="card p-4 shadow">
+        <form asp-action="CreateRuleMod" asp-controller="Moderator" method="post">
+            <div class="form-group mb-3">
+                <label for="contenido">Contenido de la regla:</label>
+                <textarea name="contenido" class="form-control" rows="4" placeholder="Escribe una nueva regla..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar para revisión</button>
+        </form>
+    </div>
+</div>

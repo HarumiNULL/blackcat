@@ -23,7 +23,15 @@ namespace blackcat.Services
             _userRepository = new UserRepository(context);
         }
 
-
+        public async Task<List<Informacion>> ObtenerMensajesForoAsync()
+        {
+            return await _context.Informacions
+                .Include(i => i.IdUsuarioNavigation)
+                .Where(i => i.IdTipoinfo == 3)
+                .OrderBy(i => i.FechaI)
+                .ToListAsync();
+        }
+        
         public async Task<string> RegistrarUsuarioAsync(Usuario request, int rol = 3)
         {
             var existe = await _context.Usuarios.AnyAsync(u => u.CorreoU == request.CorreoU);

@@ -1,16 +1,20 @@
 ﻿using blackcat.Models;
 using blackcat.Models.Dtos;
 using blackcat.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace blackcat.Services
 {
-    public class AdminServices
+    public class AdminServices 
     {
+        
+        private readonly BlackcatDbContext _context;
         private readonly InformacionRepository _repository;
 
         public AdminServices(BlackcatDbContext context)
         {
-            
+            _context = context;
             _repository = new InformacionRepository(context);
         }
 
@@ -22,5 +26,16 @@ namespace blackcat.Services
 
         public Task BorrarNota(int idUsuario) =>
             _repository.BorrarNotaAsync(idUsuario);
+        
+        public async Task<List<Informacion>> ReglasPendientesAsync()
+        {
+            var reglas = await _context.Informacions
+                .Include(i => i.IdUsuarioNavigation)
+                .Where(i => i.IdTipoinfo == 1 && !i.estadoC)
+                .ToListAsync();
+
+            return reglas;
+        }
+
     }
 }

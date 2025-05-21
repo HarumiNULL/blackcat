@@ -162,15 +162,10 @@ namespace blackcat.Controllers
             return View("ViewLogin");
         }
         
-        public IActionResult ViewForoUser()
+        public async Task<IActionResult> ViewForoUser()
         {
-            var mensajes = _context.Informacions
-                .Include(i => i.IdUsuarioNavigation)
-                .Where(i => i.IdTipoinfo == 3)
-                .OrderBy(i => i.FechaI)
-                .ToList();
-
-            return View(mensajes);
+            var mensajes = await _userService.ObtenerMensajesForoAsync(); 
+            return View(mensajes); 
 
         }
 

@@ -1,0 +1,26 @@
+@model List<blackcat.Models.Informacion>
+
+@{
+    ViewData["Title"] = "Ver Reglas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📋 Reglas Aprobadas</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">No hay reglas aprobadas.</div>
+    }
+    else
+    {
+        <ul class="list-group">
+            @foreach (var regla in Model)
+            {
+                <li class="list-group-item">
+                    <strong>@regla.FechaI.ToShortDateString()</strong>: @regla.Descrip
+                </li>
+            }
+        </ul>
+    }
+</div>
