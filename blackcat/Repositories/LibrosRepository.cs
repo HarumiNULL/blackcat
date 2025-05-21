@@ -150,5 +150,67 @@ public class LibrosRepository
     {
         return await _context.ListaUs.AnyAsync(l => l.IdLibro == idBook && l.IdUsuario == idUser);
     }
+    
+    public async Task<List<LibrosDto>> BuscarLibrosAsync(string nombreLibro)
+    {
+        try
+        {
+            var libros = await _context.Libros
+                .Where(l => l.NombreL!.Contains(nombreLibro))
+                .ToListAsync();
 
+            List<LibrosDto> librosDtos = new();
+
+            foreach (var libro in libros)
+            {
+                // Carga imagen en bytes
+                byte[]? imageBytes;
+                imageBytes = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + libro.Imagen!);
+
+                librosDtos.Add(new LibrosDto
+                {
+                    IdL = libro.IdL,
+                    NombreL = libro.NombreL,
+                    Autor = libro.Autor,
+                    Descripcion = libro.Descripcion,
+                    Imagen = libro.Imagen,
+                    Foto = imageBytes,
+                    Archivo = libro.Archivo
+                });
+
+                // 🔄 REGISTRO EN BUSQUEDUM
+                var busquedaExistente = await _context.Busqueda
+                    .FirstOrDefaultAsync(b => b.IdLibro == libro.IdL);
+
+                if (busquedaExistente != null)
+                {
+                    // Actualiza contador
+                    busquedaExistente.CantB = (busquedaExistente.CantB ?? 0) + 1;
+                    _context.Busqueda.Update(busquedaExistente);
+                }
+                else
+                {
+                    // Nueva búsqueda
+                    var nuevaBusqueda = new Busquedum
+                    {
+                        IdLibro = libro.IdL,
+                        NomLib = libro.NombreL,
+                        CantB = 1,
+                        CantBn = 0,
+                        IdEstadoBus = 1 // o el estado predeterminado
+                    };
+                    await _context.Busqueda.AddAsync(nuevaBusqueda);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return librosDtos;
+        }
+        catch (Exception)
+        {
+            return new List<LibrosDto>();
+        }
+    }
+
+    
 }
