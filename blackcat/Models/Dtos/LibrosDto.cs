@@ -17,6 +17,5 @@ public class LibrosDto
     public virtual ICollection<Busquedum> Busqueda { get; set; } = new List<Busquedum>();
 
     public virtual ICollection<ListaU> ListaUs { get; set; } = new List<ListaU>();
-    
     public byte[] ? Foto { get; set; }
 }

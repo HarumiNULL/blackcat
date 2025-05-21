@@ -154,4 +154,10 @@ public class LibrosServices
         return await _librosRepository.BuscarLibrosAsync(NombreL);
     }
     
+    public async Task<List<LibrosDto>> ListaLibrosAsync()
+    {
+        return await _librosRepository.ListaLibrosAsync();
+    }
+
+    
 }
