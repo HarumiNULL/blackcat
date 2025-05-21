@@ -170,7 +170,7 @@ namespace blackcat.Controllers
                 .OrderBy(i => i.FechaI)
                 .ToList();
 
-            return View("~/Views/User/ViewForoUser.cshtml", mensajes);
+            return View(mensajes);
 
         }
 

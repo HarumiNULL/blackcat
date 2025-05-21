@@ -1,4 +1,6 @@
 using blackcat.Models;
+using blackcat.Models.Dtos;
+using blackcat.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace blackcat.Services
@@ -6,10 +8,12 @@ namespace blackcat.Services
     public class ModServices
     {
         private readonly BlackcatDbContext _context;
+        private readonly InformacionRepository _repository;
 
         public ModServices(BlackcatDbContext context)
         {
             _context = context;
+            _repository = new InformacionRepository(_context);
         }
 
         public async Task<List<Informacion>> ObtenerMensajesForoAsync()
@@ -42,5 +46,13 @@ namespace blackcat.Services
             await _context.SaveChangesAsync();
             return true;
         }
+        public Task<InformacionDto?> ObtenerNota(int idUsuario) =>
+            _repository.ObtenerNotaAsync(idUsuario);
+
+        public Task GuardarNota(int idUsuario, string contenido) =>
+            _repository.GuardarNotaAsync(idUsuario, contenido);
+
+        public Task BorrarNota(int idUsuario) =>
+            _repository.BorrarNotaAsync(idUsuario);
     }
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using blackcat.Services;
 using System.Threading.Tasks;
+using blackcat.Models.Dtos;
 
 namespace blackcat.Controllers
 {
@@ -15,7 +17,11 @@ namespace blackcat.Controllers
         }
         public async Task<IActionResult> PagMode()
         {
-            return View();
+            int idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+            var nota = await _modServices.ObtenerNota(idUsuario);
+            ViewBag.Nota = nota?.Descrip ?? "";
+            return View(nota ?? new InformacionDto());
         }
         public async Task<IActionResult> ViewForoMod()
         {
@@ -43,5 +49,25 @@ namespace blackcat.Controllers
 
             return RedirectToAction("ViewForoMod");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GestionarNota(string accion, string contenido)
+        {
+            int idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+            if (accion == "borrar")
+            {
+                await _modServices.BorrarNota(idUsuario);
+                TempData["Mensaje"] = "Nota eliminada correctamente.";
+            }
+            else if (accion == "guardar")
+            {
+                await _modServices.GuardarNota(idUsuario, contenido);
+                TempData["Mensaje"] = "Nota guardada correctamente.";
+            }
+
+            return RedirectToAction("PagMode");
+        }
+        
     }
 }

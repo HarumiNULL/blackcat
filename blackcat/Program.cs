@@ -13,6 +13,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ModServices>();
 builder.Services.AddScoped<ReportService>();
+builder.Services.AddScoped<AdminServices>();
+builder.Services.AddScoped<InformacionRepository>();
 
 
 

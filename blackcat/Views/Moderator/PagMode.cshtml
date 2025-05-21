@@ -36,8 +36,7 @@
 
     <!-- Columna derecha: Notas -->
     <div class="col-md-8 d-flex justify-content-center">
-        <div class="bg-primary-custom p-4 rounded-4 shadow-lg position-relative border border-dark"
-             style="width: 85%;">
+        <div class="bg-primary-custom p-4 rounded-4 shadow-lg position-relative border border-dark" style="width: 85%;">
 
             <!-- Gato en la esquina superior derecha -->
             <img src="~/icons/gato.ico" alt="gatito"
@@ -47,14 +46,29 @@
                 📝 <span style="border-bottom: 2px solid black;">Notas:</span>
             </h5>
 
-            <textarea class="form-control mb-4 border border-dark" rows="6"
-                      placeholder="Escribe tus notas aquí..."
-                      style="resize: none;"></textarea>
+            <form id="notaForm" method="post">
+                <textarea id="contenidoNota" name="contenido" class="form-control mb-4 border border-dark" rows="6"
+              placeholder="Escribe tus notas aquí..." style="resize: none;">@Model?.Descrip</textarea>
 
-            <div class="d-flex justify-content-between">
-                <button class="btn btn-outline-danger border border-dark">🗑 Borrar</button>
-                <button class="btn btn-outline-primary border border-dark">Siguiente →</button>
-            </div>
+                <input type="hidden" name="accion" id="accionHidden" />
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <button type="button" class="btn btn-outline-danger border border-dark" onclick="enviarFormulario('borrar')">🗑 Borrar</button>
+
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary border border-dark" onclick="enviarFormulario('guardar')">💾 Guardar</button>
+                    </div>
+                </div>
+            </form>
         </div>
+
     </div>
 </div>
+
+<script>
+    function enviarFormulario(accion) {
+        document.getElementById('accionHidden').value = accion;
+        document.getElementById('notaForm').action = '/Moderator/GestionarNota'; // Ajusta el endpoint si es diferente
+        document.getElementById('notaForm').submit();
+    }
+</script>

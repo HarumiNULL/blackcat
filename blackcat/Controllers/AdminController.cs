@@ -1,4 +1,6 @@
-﻿using blackcat.Models;
+﻿using System.Security.Claims;
+using blackcat.Models;
+using blackcat.Models.Dtos;
 using blackcat.Models.viewModels;
 using blackcat.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ namespace blackcat.Controllers;
 [Authorize(Roles = "Administrador")]
 public class AdminController : Controller
 {
+    private readonly AdminServices _adminServices;
     private readonly BlackcatDbContext _context;
     private readonly UserServices _userService;
     private readonly LibrosServices _librosService;
@@ -24,14 +27,40 @@ public class AdminController : Controller
         _librosService = new LibrosServices(_context, _config);
         _reportService = new ReportService(_context);
         _busquedaRepository = new BusquedaRepository(_context);
+        _adminServices = new AdminServices(_context);
     }
 
     // GET
-    public IActionResult PagAdmin()
+    public async Task<IActionResult> PagAdmin()
     {
-        return View();
-    }
+        int idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
+        var nota = await _adminServices.ObtenerNota(idUsuario);
+        ViewBag.Nota = nota?.Descrip ?? "";
+        return View(nota ?? new InformacionDto());
+    }
+    
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> GestionarNota(string accion, string contenido)
+    {
+        int idUsuario = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+        if (accion == "borrar")
+        {
+            await _adminServices.BorrarNota(idUsuario);
+            TempData["Mensaje"] = "Nota eliminada correctamente.";
+        }
+        else if (accion == "guardar")
+        {
+            await _adminServices.GuardarNota(idUsuario, contenido);
+            TempData["Mensaje"] = "Nota guardada correctamente.";
+        }
+
+        return RedirectToAction("PagAdmin");
+    }
+    
     public async Task<IActionResult> ViewListUser(int pg = 1)
     {
         var users = await _userService.GetUsuarios();
@@ -152,5 +181,6 @@ public class AdminController : Controller
         var pdf = _reportService.GenerarReporteListaLibros(librosL);
         return File(pdf, "application/pdf", "ReporteListaLibros.pdf");
     }
+    
     
 }
