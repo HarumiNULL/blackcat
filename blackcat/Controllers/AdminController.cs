@@ -145,5 +145,12 @@ public class AdminController : Controller
         var pdf = _reportService.GenerarReporteBusquedas(busquedas);
         return File(pdf, "application/pdf", "ReporteBusquedas.pdf");
     }
-
+    
+    public async Task<IActionResult> DescargarReporteListaLibros()
+    {
+        var librosL = await _librosService.ListaLibrosAsync();
+        var pdf = _reportService.GenerarReporteListaLibros(librosL);
+        return File(pdf, "application/pdf", "ReporteListaLibros.pdf");
+    }
+    
 }

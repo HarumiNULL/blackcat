@@ -22,5 +22,13 @@ namespace blackcat.Services
 
             return document.GeneratePdf(); // Usa QuestPDF para generar el PDF
         }
+        
+        public byte[] GenerarReporteListaLibros(List<LibrosDto> LibrosL)
+        {
+            var logoBytes = File.ReadAllBytes("wwwroot/staticFiles/logo.png");
+            var document = new ReportListBooks(LibrosL, logoBytes);
+
+            return document.GeneratePdf(); // Usa QuestPDF para generar el PDF
+        }
     }
 }

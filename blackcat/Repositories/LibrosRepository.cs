@@ -9,13 +9,14 @@ public class LibrosRepository
 {
     private readonly BlackcatDbContext _context;
 
-    public LibrosRepository(BlackcatDbContext  dbContext)
+    public LibrosRepository(BlackcatDbContext dbContext)
     {
         _context = dbContext;
     }
+
     public async Task<List<LibrosDto>> ListaLibrosAsync()
     {
-        
+
         try
         {
             List<Libro?> libros = await _context.Libros.ToListAsync();
@@ -23,17 +24,20 @@ public class LibrosRepository
             foreach (var libro in libros)
             {
                 byte[]? imageBytes;
-                imageBytes = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + libro.Imagen!);
-                
-                var  libroDto = new LibrosDto()
+                imageBytes =
+                    new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" +
+                                                          libro.Imagen!);
+
+                var libroDto = new LibrosDto()
                 {
                     IdL = libro.IdL,
                     NombreL = libro.NombreL,
                     Autor = libro.Autor,
                     Descripcion = libro.Descripcion,
                     Imagen = libro.Imagen,
+                    Archivo = libro.Archivo,
                     Foto = imageBytes
-                    
+
                 };
                 librosDtos.Add(libroDto);
             }
@@ -52,11 +56,12 @@ public class LibrosRepository
         {
             Libro? libro = await _context.Libros.FindAsync(id);
             byte[]? imageBytes;
-            imageBytes = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + libro?.Imagen!);
+            imageBytes =
+                new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + libro?.Imagen!);
 
             if (libro != null)
             {
-                var  libroDto = new LibrosDto()
+                var libroDto = new LibrosDto()
                 {
                     IdL = libro.IdL,
                     NombreL = libro.NombreL,
@@ -120,7 +125,7 @@ public class LibrosRepository
             return false;
         }
     }
-    
+
     public async Task<List<LibrosDto>> GetLibrosPorUsuarioAsync(int idUsuario)
     {
         try
@@ -136,7 +141,8 @@ public class LibrosRepository
                 Autor = l.IdLibroNavigation.Autor,
                 Descripcion = l.IdLibroNavigation.Descripcion,
                 Imagen = l.IdLibroNavigation.Imagen,
-                Foto = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + l.IdLibroNavigation.Imagen!),
+                Foto = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" +
+                                                             l.IdLibroNavigation.Imagen!),
                 Archivo = l.IdLibroNavigation.Archivo
             }).ToList();
 
@@ -146,11 +152,12 @@ public class LibrosRepository
             return null!;
         }
     }
+
     public async Task<bool> ExisteLibroEnLista(int idBook, int idUser)
     {
         return await _context.ListaUs.AnyAsync(l => l.IdLibro == idBook && l.IdUsuario == idUser);
     }
-    
+
     public async Task<List<LibrosDto>> BuscarLibrosAsync(string nombreLibro)
     {
         try
@@ -165,7 +172,9 @@ public class LibrosRepository
             {
                 // Carga imagen en bytes
                 byte[]? imageBytes;
-                imageBytes = new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" + libro.Imagen!);
+                imageBytes =
+                    new PhotoUtilities().GetPhotoFromFile(Directory.GetCurrentDirectory() + "/wwwroot/" +
+                                                          libro.Imagen!);
 
                 librosDtos.Add(new LibrosDto
                 {
@@ -212,5 +221,42 @@ public class LibrosRepository
         }
     }
 
-    
+    public async Task<List<LibrosDto>> ListalibrosAsync()
+    {
+        try
+        {
+            List<Libro> librosL = await _context.Libros.ToListAsync();
+            List<LibrosDto> librosDtos = new List<LibrosDto>();
+
+            foreach (var l in librosL) // Cambiado de librosDtos a librosL
+            {
+                byte[]? imageBytes = null;
+
+                if (!string.IsNullOrEmpty(l.Imagen))
+                {
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", l.Imagen);
+                    imageBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
+                }
+
+                librosDtos.Add(new LibrosDto()
+                {
+                    IdL = l.IdL,
+                    NombreL = l.NombreL,
+                    Autor = l.Autor,
+                    Descripcion = l.Descripcion,
+                    Imagen = l.Imagen,
+                    Foto = imageBytes
+                });
+            }
+
+            return librosDtos; // Mover el return fuera del foreach
+        }
+        catch (Exception ex)
+        {
+            // Manejo de errores recomendado
+            Console.WriteLine($"Error al obtener libros: {ex.Message}");
+            return new List<LibrosDto>();
+        }
+    }
 }
+    
