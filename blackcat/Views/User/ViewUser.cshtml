@@ -6,8 +6,119 @@
     var nombreUsuario = Context.Session.GetString("NombreU");
 }
 
-
 <div class="text-center">
-    <h1 class="display-4">Usuario Registrado</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">Prueba</a>.</p>
+    <div id="carouselExampleIndicators"
+         class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden w-75 mx-auto" data-bs-ride="carousel"
+         data-bs-interval="5000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                    class="active rounded-circle" aria-current="true" aria-label="ANUNCIO"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    class="rounded-circle" aria-label="ANUNCIO"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    class="rounded-circle" aria-label="ANUNCIO"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="ratio ratio-191x100 overflow-hidden">
+                    <img src="~/staticFiles/anuncios/AnuncioUno.png" class="d-block w-100 h-100 object-fit-cover"
+                         alt="Slide 1">
+                </div>
+                <div class="carousel-caption d-md-block">
+                    <form asp-controller="Libros" asp-action="View" asp-route-id="1" method="get">
+                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
+                            Descripción
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="ratio ratio-191x100 overflow-hidden">
+                    <img src="~/staticFiles/anuncios/AnuncioDos.png" class="d-block w-100 h-100 object-fit-cover"
+                         alt="Slide 2">
+                </div>
+                <div class="carousel-caption d-md-block">
+                    <form asp-controller="Libros" asp-action="View" asp-route-id="2" method="get">
+                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
+                            Descripción
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="ratio ratio-191x100 overflow-hidden">
+                    <img src="~/staticFiles/anuncios/AnuncioTres.png" class="d-block w-100 h-100 object-fit-cover"
+                         alt="Slide 3">
+                </div>
+                <div class="carousel-caption d-md-block">
+                    <form asp-controller="Libros" asp-action="View" asp-route-id="3" method="get">
+                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
+                            Descripción
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+    </div>
 </div>
+
+<div class="container d-flex flex-wrap align-items-center">
+    @foreach (var libro in Model)
+    {
+        <div class="card m-2" style="width: 10rem; height: 14rem;">
+            <a asp-action="View" asp-controller="Libros" asp-route-id="@libro.IdL">
+                <img class="card-img-top rounded" style='max-height:170px;'
+                     src="data:image;base64,@Convert.ToBase64String(libro.Foto!)" alt="imagen @libro.NombreL"/>
+                <div class="card-body bg-none text-center">
+                    <p class="card-text text-truncate">@libro.NombreL</p>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (ViewBag.Pager.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   href="@Url.Action("Index", new { pg = ViewBag.Pager.CurrentPage - 1 })">Anterior</a>
+            </li>
+        }
+
+        @for (int i = ViewBag.Pager.StartPage; i <= ViewBag.Pager.EndPage; i++)
+        {
+            if (i == ViewBag.Pager.CurrentPage)
+            {
+                <li class="page-item active">
+                    <span class="page-link">@i</span>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { pg = i })">@i</a>
+                </li>
+            }
+        }
+
+        @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link"
+                   href="@Url.Action("Index", new { pg = ViewBag.Pager.CurrentPage + 1 })">Siguiente</a>
+            </li>
+        }
+    </ul>
+</nav>
