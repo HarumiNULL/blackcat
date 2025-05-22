@@ -114,6 +114,45 @@ namespace blackcat.Controllers
 
             return RedirectToAction("PagMode");
         }
-        
+        [HttpGet]
+        public IActionResult CreateAdsMod()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdsMod(IFormFile ImagenForm)
+        {
+            var exito = await _modServices.RegistrarAnuncioAsync(ImagenForm);
+
+            if (exito)
+            {
+                ViewBag.Mensaje = "Anuncio enviado para revisión.";
+            }
+            else
+            {
+                ViewBag.Error = "Error al subir el anuncio.";
+            }
+
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteAdsMod()
+        {
+            var anuncios = await _modServices.ObtenerAnunciosAprobadosAsync();
+            return View(anuncios);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAdsMod(int id)
+        {
+            await _modServices.EliminarAnuncioAsync(id);
+            return RedirectToAction("DeleteAdsMod");
+        }
+        public async Task<IActionResult> ViewAdsMod(int id)
+        {
+            var anuncios = await _modServices.ObtenerAnunciosAprobadosAsync();
+            return View(anuncios);
+        }
     }
 }

@@ -22,7 +22,7 @@ public class AdminController : Controller
     private readonly BusquedaRepository _busquedaRepository;
     public AdminController(BlackcatDbContext context, IConfiguration config)
     {
-        _modServices = new ModServices(context);
+        _modServices = new ModServices(context,config);
         _context = context;
         _config = config;
         _userService = new UserServices(_context);
@@ -156,6 +156,11 @@ public class AdminController : Controller
     {
         return await ReglasPendientes();
     }
+    public async Task<IActionResult> ApproveAdsAdmin()
+    {
+        var anuncios = await _adminServices.ObtenerAnunciosPendientesAsync();
+        return View("ApproveAdsAdmin", anuncios);
+    }
     [ValidateAntiForgeryToken]
     [HttpPost]
     public async Task<IActionResult> ViewRegBook(LibrosViewModel model)
@@ -283,7 +288,25 @@ public class AdminController : Controller
 
         return RedirectToAction("ApproveRulesAdmin");
     }
-    
+    public async Task<IActionResult> RevisarAnuncios()
+    {
+        var anuncios = await _adminServices.ObtenerAnunciosPendientesAsync();
+        return View(anuncios);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AprobarAnuncio(int id)
+    {
+        await _adminServices.AprobarAnuncioAsync(id);
+        return RedirectToAction("ApproveAdsAdmin");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteAdsMod(int id)
+    {
+        await _modServices.EliminarAnuncioAsync(id);
+        return RedirectToAction("DeleteAdsMod");
+    }
     [HttpPost]
     public async Task<IActionResult> EliminarLibro(int id)
     {

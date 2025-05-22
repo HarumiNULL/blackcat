@@ -1,0 +1,47 @@
+@model List<blackcat.Models.Informacion>
+
+@{
+    ViewBag.Title = "ApproveAdsAdmin";
+    Layout = "_Layout";
+}
+
+<h2 class="mb-4">📋 Anuncios pendientes de aprobación</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Moderador</th>
+        <th>Contenido</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var anuncio in Model)
+    {
+        <tr>
+            <td>@(anuncio.IdUsuarioNavigation != null ? anuncio.IdUsuarioNavigation.IdU.ToString() : "Desconocido")</td>
+            <td>
+                <a href="@Url.Content("~/" + anuncio.Descrip)" target="_blank">
+                    <img src="@Url.Content("~/" + anuncio.Descrip)" alt="Imagen del anuncio" style="max-height: 100px; border-radius: 6px;" />
+                </a>
+            </td>
+            <td>@anuncio.FechaI.ToString("g")</td>
+            <td>
+                <!-- Aquí puedes añadir botones para Aprobar o Rechazar -->
+                <form asp-action="AprobarAnuncio" asp-controller="Admin" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@anuncio.IdInfo" />
+                    <button type="submit" class="btn btn-success">✔️ Aprobar</button>
+                </form>
+                <form asp-action="DeleteAdsMod" asp-controller="Admin" method="post" style="display:inline; margin-left: 5px;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@anuncio.IdInfo" />
+                    <button type="submit" class="btn btn-danger">❌ Rechazar</button>
+                </form>
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

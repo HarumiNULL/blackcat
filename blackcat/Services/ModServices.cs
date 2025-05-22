@@ -8,11 +8,13 @@ namespace blackcat.Services
     public class ModServices
     {
         private readonly BlackcatDbContext _context;
+        private readonly IConfiguration _config;
         private readonly InformacionRepository _repository;
 
-        public ModServices(BlackcatDbContext context)
+        public ModServices(BlackcatDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
             _repository = new InformacionRepository(_context);
         }
 
@@ -109,5 +111,58 @@ namespace blackcat.Services
 
         public Task BorrarNota(int idUsuario) =>
             _repository.BorrarNotaAsync(idUsuario);
+        
+        public async Task<bool> RegistrarAnuncioAsync(IFormFile ImagenForm)
+        {
+            if (ImagenForm == null || ImagenForm.Length < 1)
+                return false;
+
+            var rutaAnuncios = _config["Rutas:Anuncios"]; // agrega esto en appsettings.json
+            Directory.CreateDirectory(rutaAnuncios);
+
+            var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(ImagenForm.FileName);
+            var rutaCompleta = Path.Combine("wwwroot", rutaAnuncios, nombreArchivo);
+
+            using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+            {
+                await ImagenForm.CopyToAsync(stream);
+            }
+
+            var nuevoAnuncio = new Informacion
+            {
+                Descrip = Path.Combine(rutaAnuncios, nombreArchivo), // guarda solo ruta relativa
+                FechaI = DateTime.Now,
+                IdTipoinfo = 2, // 2 = Anuncio
+                estadoC = false // pendiente de revisión
+            };
+
+            _context.Informacions.Add(nuevoAnuncio);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EliminarAnuncioAsync(int id)
+        {
+            var anuncio = await _context.Informacions.FindAsync(id);
+            if (anuncio == null || anuncio.IdTipoinfo != 2) return false;
+
+            // Eliminar el archivo físico
+            var rutaFisica = Path.Combine("wwwroot", anuncio.Descrip);
+            if (File.Exists(rutaFisica))
+                File.Delete(rutaFisica);
+
+            _context.Informacions.Remove(anuncio);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<List<Informacion>> ObtenerAnunciosAprobadosAsync()
+        {
+            return await _context.Informacions
+                .Include(i => i.IdUsuarioNavigation)
+                .Where(i => i.IdTipoinfo == 2 && i.estadoC == true)
+                .OrderByDescending(i => i.FechaI)
+                .ToListAsync();
+        }
     }
 }

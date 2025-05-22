@@ -24,6 +24,8 @@ public class HomeController : Controller
     {
         var libros = await _librosServices.GetLibros();
         
+        if (libros == null)
+            libros = new List<LibrosViewModel>();
         const int pageSize = 5;
         if (pg < 1)
             pg = 1;
@@ -43,7 +45,7 @@ public class HomeController : Controller
         const int pageSize = 5;
         if (pg < 1)
             pg = 1;
-        int recsCount = libros.Count();
+        int recsCount = (libros != null)?libros.Count(): 0;
         var pager = new Pager(recsCount,pg, pageSize);
         int recSkip = (pg - 1) * pageSize;
         var data = libros.Skip(recSkip).Take(pageSize).ToList();

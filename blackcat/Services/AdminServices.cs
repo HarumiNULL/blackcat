@@ -39,5 +39,24 @@ namespace blackcat.Services
             return reglas;
         }
         
+        public async Task<List<Informacion>> ObtenerAnunciosPendientesAsync()
+        {
+            return await _context.Informacions
+                .Include(i => i.IdUsuarioNavigation)
+                .Where(i => i.IdTipoinfo == 2 && i.estadoC == false)
+                .OrderByDescending(i => i.FechaI)
+                .ToListAsync();
+        }
+
+        public async Task<bool> AprobarAnuncioAsync(int id)
+        {
+            var anuncio = await _context.Informacions.FindAsync(id);
+            if (anuncio == null || anuncio.IdTipoinfo != 2) return false;
+
+            anuncio.estadoC = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        
     }
 }
