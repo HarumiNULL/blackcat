@@ -15,7 +15,9 @@ namespace blackcat.Controllers
 
         public ModeratorController(ModServices moderatorService)
         {
+            
             _modServices = moderatorService;
+
         }
         public async Task<IActionResult> PagMode()
         {
@@ -28,6 +30,8 @@ namespace blackcat.Controllers
         public async Task<IActionResult> ViewForoMod()
         {
             var mensajes = await _modServices.ObtenerMensajesForoAsync(); // ← correcto
+            var reglas = await _modServices.ObtenerReglasAsync(); 
+            ViewBag.Reglas = reglas; 
             return View(mensajes); // ← pasas el modelo esperado
         }
        
@@ -123,7 +127,15 @@ namespace blackcat.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAdsMod(IFormFile ImagenForm)
         {
-            var exito = await _modServices.RegistrarAnuncioAsync(ImagenForm);
+            var idUsuarioStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(idUsuarioStr, out var idUsuario))
+            {
+                ViewBag.Error = "No se pudo identificar al usuario.";
+                return View();
+            }
+
+            var exito = await _modServices.RegistrarAnuncioAsync(ImagenForm, idUsuario);
 
             if (exito)
             {
@@ -136,6 +148,7 @@ namespace blackcat.Controllers
 
             return View();
         }
+
         [HttpGet]
         public async Task<IActionResult> DeleteAdsMod()
         {
@@ -154,5 +167,13 @@ namespace blackcat.Controllers
             var anuncios = await _modServices.ObtenerAnunciosAprobadosAsync();
             return View(anuncios);
         }
+        
+        public async Task<IActionResult> Index()
+        {
+            var anuncios = await _modServices.ObtenerAnunciosAprobadosAsync();
+            ViewBag.Anuncios = anuncios;
+            return View();
+        }
+        
     }
 }

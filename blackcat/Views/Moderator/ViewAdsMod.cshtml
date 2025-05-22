@@ -17,8 +17,11 @@
         <ul class="list-group">
             @foreach (var anuncio in Model)
             {
-                <li class="list-group-item">
-                    <strong>@anuncio.FechaI.ToShortDateString()</strong>: @anuncio.Descrip
+                <li class="list-group-item d-flex align-items-center justify-content-between">
+                    <div>
+                        <strong>@anuncio.FechaI.ToShortDateString()</strong>:
+                        Nombre del archivo: <span class="text-muted">@System.IO.Path.GetFileName(anuncio.Descrip)</span>
+                    </div>
                     <a href="@Url.Content("~/" + anuncio.Descrip)" target="_blank">
                         <img src="@Url.Content("~/" + anuncio.Descrip)" alt="Imagen del anuncio" style="max-height: 100px; border-radius: 6px;" />
                     </a>

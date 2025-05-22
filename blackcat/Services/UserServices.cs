@@ -30,6 +30,7 @@ namespace blackcat.Services
                 .Where(i => i.IdTipoinfo == 3)
                 .OrderBy(i => i.FechaI)
                 .ToListAsync();
+            
         }
         
         public async Task<string> RegistrarUsuarioAsync(UserViewModel request, int rol = 3)

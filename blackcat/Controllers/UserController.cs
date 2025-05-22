@@ -14,11 +14,11 @@ namespace blackcat.Controllers
     {
         private readonly UserServices _userService;
         private readonly LibrosServices _librosService;
-        private readonly BlackcatDbContext _context;
+        private readonly ModServices _modServices;
 
-        public UserController(BlackcatDbContext context, IConfiguration config)
+        public UserController(BlackcatDbContext context, IConfiguration config, ModServices modServices)
         {
-            _context = context;
+            _modServices = modServices;
             _userService = new UserServices(context);
             _librosService = new LibrosServices(context, config);
         }
@@ -166,6 +166,8 @@ namespace blackcat.Controllers
         public async Task<IActionResult> ViewForoUser()
         {
             var mensajes = await _userService.ObtenerMensajesForoAsync(); 
+            var reglas = await _modServices.ObtenerReglasAsync(); 
+            ViewBag.Reglas = reglas; 
             return View(mensajes); 
 
         }

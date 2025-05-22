@@ -112,7 +112,7 @@ namespace blackcat.Services
         public Task BorrarNota(int idUsuario) =>
             _repository.BorrarNotaAsync(idUsuario);
         
-        public async Task<bool> RegistrarAnuncioAsync(IFormFile ImagenForm)
+        public async Task<bool> RegistrarAnuncioAsync(IFormFile ImagenForm, int idUsuario)
         {
             if (ImagenForm == null || ImagenForm.Length < 1)
                 return false;
@@ -130,6 +130,7 @@ namespace blackcat.Services
 
             var nuevoAnuncio = new Informacion
             {
+                IdUsuario = idUsuario,
                 Descrip = Path.Combine(rutaAnuncios, nombreArchivo), // guarda solo ruta relativa
                 FechaI = DateTime.Now,
                 IdTipoinfo = 2, // 2 = Anuncio

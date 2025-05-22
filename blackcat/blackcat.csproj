@@ -17,7 +17,6 @@
       <Folder Include="Utilities\" />
       <Folder Include="Views\Error\" />
       <Folder Include="Views\Foro\" />
-      <Folder Include="wwwroot\staticFiles\anuncios\" />
       <Folder Include="wwwroot\staticFiles\images\" />
       <Folder Include="wwwroot\staticFiles\libros\" />
     </ItemGroup>

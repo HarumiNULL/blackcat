@@ -1,72 +1,63 @@
 ﻿@model List<blackcat.Models.viewModels.LibrosViewModel>
+@using blackcat.Models
+@{
+    ViewData["Title"] = "Inicio";
+    var anuncios = ViewBag.Anuncios as List<Informacion> ?? new List<Informacion>();
+    var first = true;
+    var indice = 0;
+}
 
+@if (anuncios.Any())
+{
+    <div class="text-center my-4">
+        <div id="carouselExampleIndicators"
+             class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden w-50 mx-auto"
+             data-bs-ride="carousel" data-bs-interval="5000">
 
+        <!-- Indicadores -->
+            <div class="carousel-indicators">
+                @for (int i = 0; i < anuncios.Count; i++)
+                {
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i"
+                            class="@(i == 0 ? "active" : "") rounded-circle"
+                            aria-current="@(i == 0 ? "true" : "false")" aria-label="Anuncio @(i + 1)">
+                    </button>
+                }
+            </div>
 
-<div class="text-center">
-    <div id="carouselExampleIndicators"
-         class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden w-75 mx-auto" data-bs-ride="carousel"
-         data-bs-interval="5000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                    class="active rounded-circle" aria-current="true" aria-label="ANUNCIO"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    class="rounded-circle" aria-label="ANUNCIO"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    class="rounded-circle" aria-label="ANUNCIO"></button>
+            <!-- Slides -->
+            <div class="carousel-inner">
+                @foreach (var anuncio in anuncios)
+                {
+                    <div class="carousel-item @(first ? "active" : "")">
+                        <div class="ratio ratio-16x9 overflow-hidden">
+                            <img src="@Url.Content("~/" + anuncio.Descrip.Replace("\\", "/"))"
+                                 class="d-block w-100 h-100 object-fit-cover"
+                                 alt="Anuncio @(++indice)">
+                        </div>
+                    </div>
+                    first = false;
+                }
+            </div>
+
+            <!-- Controles -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="ratio ratio-191x100 overflow-hidden">
-                    <img src="~/staticFiles/anuncios/AnuncioUno.png" class="d-block w-100 h-100 object-fit-cover"
-                         alt="Slide 1">
-                </div>
-                <div class="carousel-caption d-md-block">
-                    <form asp-controller="Libros" asp-action="View" asp-route-id="1" method="get">
-                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
-                            Descripción
-                        </button>
-                    </form>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="ratio ratio-191x100 overflow-hidden">
-                    <img src="~/staticFiles/anuncios/AnuncioDos.png" class="d-block w-100 h-100 object-fit-cover"
-                         alt="Slide 2">
-                </div>
-                <div class="carousel-caption d-md-block">
-                    <form asp-controller="Libros" asp-action="View" asp-route-id="2" method="get">
-                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
-                            Descripción
-                        </button>
-                    </form>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="ratio ratio-191x100 overflow-hidden">
-                    <img src="~/staticFiles/anuncios/AnuncioTres.png" class="d-block w-100 h-100 object-fit-cover"
-                         alt="Slide 3">
-                </div>
-                <div class="carousel-caption d-md-block">
-                    <form asp-controller="Libros" asp-action="View" asp-route-id="3" method="get">
-                        <button type="submit" class="btn text-white" style="background-color: #40a9a1;">
-                            Descripción
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-            <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
-            <span class="visually-hidden">Anterior</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-            <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
-            <span class="visually-hidden">Siguiente</span>
-        </button>
     </div>
-</div>
+}
+else
+{
+    <div class="alert alert-info text-center mt-5">
+        No hay anuncios disponibles por el momento.
+    </div>
+}
 
 <div class="container d-flex flex-wrap align-items-center">
     @foreach (var libro in Model)
@@ -78,7 +69,7 @@
                 <div class="card-body bg-none text-center">
                     <p class="card-text text-truncate">@libro.NombreL</p>
                 </div>
-            </a>
+            </a>a
         </div>
     }
 </div>

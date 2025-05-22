@@ -10,15 +10,17 @@ public class HomeController : Controller
 {
     private readonly LibrosServices _librosServices;
     private readonly IConfiguration _config;
+    private readonly ModServices _modServices;
     
     private readonly ILogger<HomeController> _logger;
     BlackcatDbContext _context ;
-    public HomeController(BlackcatDbContext context, ILogger<HomeController> logger, IConfiguration config)
+    public HomeController(BlackcatDbContext context, ILogger<HomeController> logger, IConfiguration config, ModServices modServices)
     {
         _context = context;
         _config = config;
         _logger = logger;
         _librosServices = new LibrosServices(_context, _config);
+        _modServices = modServices;
     }
     public async Task<IActionResult> Index(int pg=1)
     {
@@ -34,7 +36,8 @@ public class HomeController : Controller
         int recSkip = (pg - 1) * pageSize;
         var data = libros.Skip(recSkip).Take(pageSize).ToList();
         this.ViewBag.Pager = pager;
-        
+        var anuncios = await _modServices.ObtenerAnunciosAprobadosAsync();
+        ViewBag.Anuncios = anuncios;
         return View(data);
     }
 
@@ -72,4 +75,6 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+    
+    
 }
