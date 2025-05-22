@@ -11,11 +11,13 @@ namespace blackcat.Services
         
         private readonly BlackcatDbContext _context;
         private readonly InformacionRepository _repository;
+        private readonly LibrosRepository _librosRepository;
 
         public AdminServices(BlackcatDbContext context)
         {
             _context = context;
             _repository = new InformacionRepository(context);
+            _librosRepository = new LibrosRepository(context);
         }
 
         public Task<InformacionDto?> ObtenerNota(int idUsuario) =>
@@ -36,6 +38,6 @@ namespace blackcat.Services
 
             return reglas;
         }
-
+        
     }
 }

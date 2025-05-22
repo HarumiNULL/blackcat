@@ -51,6 +51,7 @@ public class LibrosServices
         try
         {
             LibrosDto libroDto = await _librosRepository.GetLibroAsync(id);
+            
             var libroViewModel = new LibrosViewModel()
             {
                 IdL = libroDto.IdL,
@@ -166,5 +167,61 @@ public class LibrosServices
         return await _librosRepository.ListaLibrosAsync();
     }
 
-    
+    public async Task<bool> ModificarLibroAsync(LibrosViewModel libroModificado)
+    {
+        var rutaLibros = _config["Rutas:Libros"];
+        var rutaImagenes = _config["Rutas:Imagenes"];
+        var lib = await _librosRepository.GetLibroAsync(libroModificado.IdL);
+        var rutaEliminarArchivo = Path.Combine("wwwroot", rutaLibros, lib.Archivo);
+        var rutaEliminarImagen = Path.Combine("wwwroot", lib.Imagen.TrimStart('/'));
+        if (File.Exists(rutaEliminarArchivo))
+        {
+            File.Delete(rutaEliminarArchivo);
+        }
+
+        if (File.Exists(rutaEliminarImagen))
+        {
+            File.Delete(rutaEliminarImagen);
+        }
+        if (libroModificado.ArchivoForm == null || libroModificado.ArchivoForm.Length < 1
+                                        || libroModificado.ImagenForm == null || libroModificado.ImagenForm.Length < 1)
+        {
+            return false;
+        }
+
+        
+        //Crear los directorios si no existen
+        Directory.CreateDirectory(rutaLibros);
+        Directory.CreateDirectory(rutaImagenes);
+        
+       
+        // Generar nombres únicos para los archivos
+        var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(libroModificado.ArchivoForm.FileName);
+        var nombreImagen = Guid.NewGuid().ToString() + Path.GetExtension(libroModificado.ImagenForm.FileName); 
+        
+        // Guardar Archivos
+        var rutaImagen = Path.Combine(rutaImagenes, nombreImagen);
+        var rutaArchivoFinal = Path.Combine("wwwroot", rutaLibros, nombreArchivo);
+        var rutaImagenFinal = Path.Combine("wwwroot", rutaImagenes, nombreImagen);
+        
+        using (var stream = new FileStream(rutaArchivoFinal, FileMode.Create))
+        {
+            await libroModificado.ArchivoForm.CopyToAsync(stream);
+        }
+
+        using (var stream = new FileStream(rutaImagenFinal, FileMode.Create))
+        {
+            await libroModificado.ImagenForm.CopyToAsync(stream);
+        }
+        var libro = new LibrosDto()
+        {
+            IdL = libroModificado.IdL,
+            NombreL = libroModificado.NombreL,
+            Autor = libroModificado.Autor,
+            Descripcion = libroModificado.Descripcion,
+            Archivo = nombreArchivo,
+            Imagen = rutaImagen,
+        };
+        return await _librosRepository.UpdateBook(libro);
+    }
 }

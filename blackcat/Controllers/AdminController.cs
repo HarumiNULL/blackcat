@@ -175,10 +175,28 @@ public class AdminController : Controller
         TempData["ToastType"] = "error";
         return View();
     }
-    public async Task<IActionResult> ViewEditBook()
+    public async Task<IActionResult> ViewEditBook(int id)
     {
-        return View();
+        var libro = await _librosService.GetLibro(id);
+        return View(libro);
     }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ViewEditBook(LibrosViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        await _librosService.ModificarLibroAsync(model);
+
+        return RedirectToAction("ViewBookList"); // Redirigir a la lista de libros
+    }
+
+    
+    
     
     [HttpPost]
     [ValidateAntiForgeryToken]

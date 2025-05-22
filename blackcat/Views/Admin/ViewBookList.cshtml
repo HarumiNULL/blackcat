@@ -16,19 +16,19 @@
       </tr>
       </thead>
       <tbody>
-      @foreach (var user in Model)
+      @foreach (var libro in Model)
       {
         <tr>
-          <td>@user.NombreL</td>
-          <td>@user.Archivo</td>
+          <td>@libro.NombreL</td>
+          <td>@libro.Archivo</td>
           <td>
             <div class="dropdown">
               <button class="btn-sm bg-secondary-custom  text-dark  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 Opciones
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" asp-controller="Admin" asp-action="ViewEditBook">Editar</a></li>
-                <li><a class="dropdown-item" asp-controller="Admin" asp-action="ViewEditBook">Eliminar</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="ViewEditBook" asp-route-id="@libro.IdL">Editar</a></li>
+                <li><a class="dropdown-item" asp-controller="Admin" asp-action="ViewEditBook" asp-route-id="@libro.IdL">Eliminar</a></li>
               </ul>
               
             </div>

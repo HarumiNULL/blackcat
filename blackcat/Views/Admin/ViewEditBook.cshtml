@@ -21,34 +21,35 @@
                         <div class="alert alert-success">@ViewBag.Mensaje</div>
                     }
 
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" asp-controller="Admin" asp-action="ViewEditBook" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label asp-for="NombreL" class="form-label">Nombre de Libro</label>
-                            <input name="NombreL" class="form-control" asp-for="NombreL" placeholder="Ingrese nombre" required />
+                            <input type="hidden" asp-for="IdL" />
+                            <label asp-for="NombreL" class="form-label"></label>
+                            <input asp-for="NombreL" class="form-control" placeholder="Ingrese nombre" required/>
                             <span asp-validation-for="NombreL" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Autor" class="form-label">Autor</label>
-                            <input name="Autor" class="form-control" asp-for="Autor" placeholder="Ingrese el nombre del autor" required />
+                            <label asp-for="Autor" class="form-label"></label>
+                            <input asp-for="Autor" class="form-control" placeholder="Ingrese el nombre del autor" required />
                             <span asp-validation-for="Autor" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ArchivoForm" class="form-label">Archivo del Libro (PDF)</label>
-                            <input name="ArchivoForm" class="form-control" asp-for="ArchivoForm" accept=".pdf,.epub" required />
+                            <label asp-for="ArchivoForm" class="form-label"></label>
+                            <input asp-for="ArchivoForm" class="form-control" accept=".pdf,.epub" required />
                             <span asp-validation-for="ArchivoForm" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Descripcion" class="form-label">Descripcion</label>
-                            <input name="Descripcion" class="form-control" asp-for="Descripcion" placeholder="Ingrese la descripcion" required />
+                            <label asp-for="Descripcion" class="form-label"></label>
+                            <input asp-for="Descripcion" class="form-control" placeholder="Ingrese la descripcion" required />
                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ImagenForm" class="form-label">Imagen de Portada</label>
-                            <input id="ImagenForm" name="ImagenForm" class="form-control" asp-for="ImagenForm" accept="image/*" required />
+                            <label asp-for="ImagenForm" class="form-label"></label>
+                            <input asp-for="ImagenForm" class="form-control"  accept="image/*" required />
                             <span asp-validation-for="ImagenForm" class="text-danger"></span>
                         </div>
 
@@ -64,7 +65,7 @@
         <div class="col-md-4">
             <div class="card p-3 shadow-sm text-center" style="margin-top: 150px;">
                 <h5 class="mb-3 fw-bold">Vista previa de Portada</h5>
-                <img id="imagen-preview" src="~/icons/placeholder.png" alt="Vista previa de la imagen" class="img-fluid border rounded" style="max-height: 300px; object-fit: contain;" />
+                <img id="imagen-preview" src="data:image;base64,@Convert.ToBase64String(Model.Foto!)" alt="Vista previa de la imagen" class="img-fluid border rounded" style="max-height: 300px; object-fit: contain;" />
             </div>
         </div>
     </div>

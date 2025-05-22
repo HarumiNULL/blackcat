@@ -284,5 +284,18 @@ public class LibrosRepository
             return new List<LibrosDto>();
         }
     }
+
+    public async Task<bool> UpdateBook(LibrosDto libros)
+    {
+        var l = await _context.Libros.FindAsync(libros.IdL);
+        l.IdL = libros.IdL;
+        l.NombreL = libros.NombreL;
+        l.Autor = libros.Autor;
+        l.Descripcion = libros.Descripcion;
+        l.Archivo = libros.Archivo;
+        l.Imagen = libros.Imagen;
+        
+        return await _context.SaveChangesAsync() > 0;
+    }
 }
     
