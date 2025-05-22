@@ -26,7 +26,7 @@ public class LibrosController : Controller
     {
         List<Libro?> Libros = _context.Libros.ToList();
 
-        const int pageSize = 5;
+        const int pageSize = 6;
         if (pg < 1)
             pg = 1;
         int recsCount = Libros.Count();

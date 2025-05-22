@@ -26,7 +26,7 @@ public class HomeController : Controller
         
         if (libros == null)
             libros = new List<LibrosViewModel>();
-        const int pageSize = 5;
+        const int pageSize = 6;
         if (pg < 1)
             pg = 1;
         int recsCount = (libros != null)?libros.Count(): 0;
@@ -42,7 +42,7 @@ public class HomeController : Controller
     {
         var libros = await _librosServices.GetLibros();
         
-        const int pageSize = 5;
+        const int pageSize = 6;
         if (pg < 1)
             pg = 1;
         int recsCount = (libros != null)?libros.Count(): 0;
