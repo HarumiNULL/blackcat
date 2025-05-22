@@ -224,4 +224,26 @@ public class LibrosServices
         };
         return await _librosRepository.UpdateBook(libro);
     }
+
+    public async Task<bool> EliminarLibroAsync(int idL)
+    {
+        var libro = await _librosRepository.GetLibroAsync(idL);
+        if (libro == null) return false;
+
+        var rutaArchivo = Path.Combine("wwwroot", _config["Rutas:Libros"], libro.Archivo);
+        var rutaImagen = Path.Combine("wwwroot", libro.Imagen.TrimStart('/'));
+
+        // Eliminar archivos si existen
+        if (File.Exists(rutaArchivo))
+            File.Delete(rutaArchivo);
+
+        if (File.Exists(rutaImagen))
+            File.Delete(rutaImagen);
+
+        // ✅ Eliminar búsquedas asociadas
+        await _librosRepository.EliminarBusquedasPorLibroAsync(idL);
+
+        // ✅ Eliminar libro
+        return await _librosRepository.EliminarLibroAsync(idL);
+    }
 }

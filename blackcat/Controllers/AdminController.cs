@@ -141,7 +141,7 @@ public class AdminController : Controller
         const int pageSize = 5;
         if (pg < 1)
             pg = 1;
-        int recsCount = libros.Count();
+        int recsCount = (libros != null) ? libros.Count():0;
         var pager = new Pager(recsCount,pg, pageSize);
         int recSkip = (pg - 1) * pageSize;
         var data = libros.Skip(recSkip).Take(pageSize).ToList();
@@ -283,5 +283,24 @@ public class AdminController : Controller
 
         return RedirectToAction("ApproveRulesAdmin");
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> EliminarLibro(int id)
+    {
+        var resultado = await _librosService.EliminarLibroAsync(id);
+        if (!resultado)
+        {
+            TempData["ToastMessage"] = "Error al eliminar el libro.";
+            TempData["ToastType"] = "error";
+        }
+        else
+        {
+            TempData["ToastMessage"] = "Libro eliminado correctamente.";
+            TempData["ToastType"] = "success";
+        }
+
+        return RedirectToAction("ViewBookList");
+    }
+
     
 }

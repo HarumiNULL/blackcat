@@ -297,5 +297,25 @@ public class LibrosRepository
         
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<bool> EliminarLibroAsync(int idL)
+    {
+        var libro = await _context.Libros.FindAsync(idL);
+
+        if (libro == null) return false;
+        
+        _context.Libros.Remove(libro);
+        await _context.SaveChangesAsync();
+        return true;
+
+    }
+    
+    public async Task EliminarBusquedasPorLibroAsync(int idLibro)
+    {
+        var busquedas = _context.Busqueda.Where(b => b.IdLibro == idLibro);
+        _context.Busqueda.RemoveRange(busquedas);
+        await _context.SaveChangesAsync();
+    }
+
 }
     
