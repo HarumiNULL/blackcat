@@ -240,9 +240,6 @@ public class LibrosServices
         if (File.Exists(rutaImagen))
             File.Delete(rutaImagen);
 
-        // ✅ Eliminar búsquedas asociadas
-        await _librosRepository.EliminarBusquedasPorLibroAsync(idL);
-
         // ✅ Eliminar libro
         return await _librosRepository.EliminarLibroAsync(idL);
     }

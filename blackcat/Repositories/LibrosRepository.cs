@@ -303,19 +303,16 @@ public class LibrosRepository
         var libro = await _context.Libros.FindAsync(idL);
 
         if (libro == null) return false;
-        
+        var busquedas = _context.Busqueda.Where(b => b.IdLibro == idL);
+        _context.Busqueda.RemoveRange(busquedas);
+        var lista  = _context.ListaUs.Where(l => l.IdLibro == idL);
+        _context.ListaUs.RemoveRange(lista);
         _context.Libros.Remove(libro);
         await _context.SaveChangesAsync();
         return true;
 
     }
-    
-    public async Task EliminarBusquedasPorLibroAsync(int idLibro)
-    {
-        var busquedas = _context.Busqueda.Where(b => b.IdLibro == idLibro);
-        _context.Busqueda.RemoveRange(busquedas);
-        await _context.SaveChangesAsync();
-    }
+
 
 }
     
