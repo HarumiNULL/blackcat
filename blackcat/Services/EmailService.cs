@@ -36,7 +36,7 @@ public class EmailService
                 body {{
                     font-family: Arial, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #48ADBC;
                 }}
                 .container {{
                     max-width: 600px;
@@ -46,7 +46,7 @@ public class EmailService
                 .button {{
                     display: inline-block;
                     padding: 10px 20px;
-                    background-color: #007bff;
+                    background-color: #48ADBC;
                     color: white !important;
                     text-decoration: none;
                     border-radius: 5px;
@@ -55,7 +55,7 @@ public class EmailService
                 .footer {{
                     margin-top: 30px;
                     font-size: 0.9em;
-                    color: #666;
+                    color: #A1D7D0;
                 }}
             </style>
         </head>
@@ -77,6 +77,8 @@ public class EmailService
                 <div class=""footer"">
                     <p>Atentamente,</p>
                     <p>El equipo de soporte</p>
+                    <img src=""https://localhost:5050/staticFiles/images/logo.png"" alt=""Logo"" style=""max-width: 200px; display: block; margin-bottom: 20px;"" />
+
                 </div>
             </div>
         </body>

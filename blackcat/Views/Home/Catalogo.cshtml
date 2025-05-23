@@ -3,19 +3,23 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<div class="container d-flex flex-wrap align-items-center">
-    @foreach (var libro in Model)
-    {
-        <div class="card m-2" style="width: 10rem; height: 14rem;">
-            <a asp-action="View" asp-controller="Libros" asp-route-id="@libro.IdL">
-                <img class="card-img-top rounded" style='max-height:170px;'
-                     src="data:image;base64,@Convert.ToBase64String(libro.Foto!)" alt="imagen @libro.NombreL"/>
-                <div class="card-body bg-none text-center">
-                    <p class="card-text text-truncate">@libro.NombreL</p>
+<div class="container">
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5">
+        @foreach (var libro in Model)
+        {
+            <div class="col">
+                <div class="card m-2" style="width: 10rem; height: 14rem;">
+                    <a asp-action="View" asp-controller="Libros" asp-route-id="@libro.IdL">
+                        <img class="card-img-top rounded" style="max-height: 175px; object-fit: cover;"
+                             src="data:image;base64,@Convert.ToBase64String(libro.Foto!)" alt="imagen @libro.NombreL"/>
+                        <div class="card-body text-center">
+                            <p class="card-text text-truncate mb-0">@libro.NombreL</p>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-    }
+            </div>
+        }
+    </div>
 </div>
 
 <nav aria-label="Page navigation">
