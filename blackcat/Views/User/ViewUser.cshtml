@@ -1,5 +1,8 @@
 @using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@model List<blackcat.Models.viewModels.LibrosViewModel>
+@using blackcat.Models 
+
+
 @{
     
     ViewData["Title"] = "Pagina Principal";
@@ -93,7 +96,7 @@
         {
             <li class="page-item">
                 <a class="page-link"
-                   href="@Url.Action("Index", new { pg = ViewBag.Pager.CurrentPage - 1 })">Anterior</a>
+                   href="@Url.Action("ViewUser", new { pg = ViewBag.Pager.CurrentPage - 1 })">Anterior</a>
             </li>
         }
 
@@ -108,7 +111,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { pg = i })">@i</a>
+                    <a class="page-link" href="@Url.Action("ViewUser", new { pg = i })">@i</a>
                 </li>
             }
         }
@@ -117,7 +120,7 @@
         {
             <li class="page-item">
                 <a class="page-link"
-                   href="@Url.Action("Index", new { pg = ViewBag.Pager.CurrentPage + 1 })">Siguiente</a>
+                   href="@Url.Action("ViewUser", new { pg = ViewBag.Pager.CurrentPage + 1 })">Siguiente</a>
             </li>
         }
     </ul>

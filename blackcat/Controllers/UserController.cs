@@ -45,11 +45,25 @@ namespace blackcat.Controllers
             return View();
         }
 
-        public IActionResult ViewUser()
+        public async Task<IActionResult> ViewUser(int pg=1)
         {
-            return View();
+            var libros = await _librosService.GetLibros();
+        
+            if (libros == null)
+                libros = new List<LibrosViewModel>();
+            const int pageSize = 7;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = (libros != null)?libros.Count(): 0;
+            var pager = new Pager(recsCount,pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = libros.Skip(recSkip).Take(pageSize).ToList();
+            this.ViewBag.Pager = pager;
+            var anuncios = await _modServices.ObtenerAnunciosAprobadosAsync();
+            ViewBag.Anuncios = anuncios;
+            return View(data);
         }
-
+        
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> ViewLogin(LoginViewModel usuario)

@@ -21,7 +21,7 @@
                     <div>
                         <strong>@regla.FechaI.ToShortDateString()</strong>: @regla.Descrip
                     </div>
-                    <form asp-action="EliminarRegla" asp-controller="Moderator" method="post" class="mb-0">
+                    <form asp-action="Eliminar" asp-controller="Moderator" method="post" class="mb-0">
                         <input type="hidden" name="id" value="@regla.IdInfo" />
                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                     </form>

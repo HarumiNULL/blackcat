@@ -147,7 +147,7 @@ public class LibrosServices
         }
         catch (SystemException)
         {
-            return null!;
+            return new List<LibrosViewModel>();
         }
     }
     
