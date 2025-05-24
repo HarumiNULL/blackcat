@@ -1,0 +1,25 @@
+@model List<blackcat.Models.Informacion>
+@{
+    ViewBag.Title = "Eliminar Anuncios";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Eliminar Anuncios</h2>
+    <div class="row mt-3">
+        @foreach (var anuncio in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="~/@anuncio.Descrip" class="card-img-top" alt="Anuncio" />
+                    <div class="card-body text-center">
+                        <form asp-action="DeleteAdsMod" method="post">
+                            <input type="hidden" name="id" value="@anuncio.IdInfo" />
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

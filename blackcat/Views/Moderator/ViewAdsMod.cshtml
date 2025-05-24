@@ -1,0 +1,32 @@
+@model List<blackcat.Models.Informacion>
+
+@{
+    ViewData["Title"] = "Ver Anuncios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Anuncios Aprobados</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">No hay anuncios aprobados.</div>
+    }
+    else
+    {
+        <ul class="list-group">
+            @foreach (var anuncio in Model)
+            {
+                <li class="list-group-item d-flex align-items-center justify-content-between">
+                    <div>
+                        <strong>@anuncio.FechaI.ToShortDateString()</strong>:
+                        Nombre del archivo: <span class="text-muted">@System.IO.Path.GetFileName(anuncio.Descrip)</span>
+                    </div>
+                    <a href="@Url.Content("~/" + anuncio.Descrip)" target="_blank">
+                        <img src="@Url.Content("~/" + anuncio.Descrip)" alt="Imagen del anuncio" style="max-height: 100px; border-radius: 6px;" />
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>

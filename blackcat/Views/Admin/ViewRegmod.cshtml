@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Registro Moderadores";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-99">
+    <div class="p-4 rounded-4" style="background-color: #a8d9d2; width: 80%; max-width: 480px;">
+        <div class="bg-white p-4 rounded-3 shadow-sm">
+            <h2 class="text-center mb-4" style="font-weight: bold;">Registro Moderadores</h2>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+            @if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-success">@ViewBag.Mensaje</div>
+            }
+
+            <form method="post" >
+                <div class="mb-3">
+                    <label for="NombreU" class="form-label">Nombre de Usuario</label>
+                    <input type="text" name="NombreU" class="form-control" id="NombreU" placeholder="Ingrese su  Usuario" required />
+                </div>
+
+                <div class="mb-3">
+                    <label  class="form-label">Correo</label>
+                    <input type="email" class="form-control" name="CorreoU" placeholder="Ingrese correo">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="Cont" class="form-label">Contraseña</label>
+                    <input type="password" name="Cont" class="form-control" id="Cont" placeholder="Ingrese su contraseña" required />
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn text-white" style="background-color: #40a9a1;">Registrar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Caja flotante lateral -->
+<div class="col-md-4">
+    <div class="card p-3 floating-box shadow-sm d-flex flex-row align-items-center">
+        <!-- Gatito a la izquierda -->
+        <img src="~/icons/gato.ico" alt="gatito" style="width: 80px;" class="me-3"/>
+
+        <!-- Texto y botón a la derecha -->
+        <div class="text-center">
+            <p class="fw-bold text-info mb-2">Lista de usuarios</p>
+            <a asp-action="ViewListUser" class="btn btn-outline-info btn-sm">Ingresar</a>
+        </div>
+    </div>
+</div>

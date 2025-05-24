@@ -1,0 +1,32 @@
+@model List<blackcat.Models.Informacion>
+
+@{
+    ViewData["Title"] = "Eliminar Reglas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-danger">🗑 Eliminar Reglas</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">No hay reglas disponibles para eliminar.</div>
+    }
+    else
+    {
+        <ul class="list-group">
+            @foreach (var regla in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>@regla.FechaI.ToShortDateString()</strong>: @regla.Descrip
+                    </div>
+                    <form asp-action="Eliminar" asp-controller="Moderator" method="post" class="mb-0">
+                        <input type="hidden" name="id" value="@regla.IdInfo" />
+                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+</div>

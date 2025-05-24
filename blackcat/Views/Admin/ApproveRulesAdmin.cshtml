@@ -1,0 +1,43 @@
+@model List<blackcat.Models.Informacion>
+
+@{
+    ViewBag.Title = "ApproveRulesAdmin";
+    Layout = "_Layout";
+}
+
+<h2 class="mb-4">📋 Reglas pendientes de aprobación</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Moderador</th>
+        <th>Contenido</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var regla in Model)
+    {
+        <tr>
+            <td>@(regla.IdUsuarioNavigation != null ? regla.IdUsuarioNavigation.IdU.ToString() : "Desconocido")</td>
+            <td>@regla.Descrip</td>
+            <td>@regla.FechaI.ToString("g")</td>
+            <td>
+                <!-- Aquí puedes añadir botones para Aprobar o Rechazar -->
+                <form asp-action="AprobarRegla" asp-controller="Admin" method="post" style="display:inline;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@regla.IdInfo" />
+                    <button type="submit" class="btn btn-success">✔️ Aprobar</button>
+                </form>
+                <form asp-action="RechazarRegla" asp-controller="Admin" method="post" style="display:inline; margin-left: 5px;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@regla.IdInfo" />
+                    <button type="submit" class="btn btn-danger">❌ Rechazar</button>
+                </form>
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

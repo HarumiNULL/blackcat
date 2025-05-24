@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace blackcat.Models;
+
+public partial class Busquedum
+{
+    public int IdBus { get; set; }
+
+    public int? IdEstadoBus { get; set; }
+
+    public int? IdLibro { get; set; }
+
+    public string? NomLib { get; set; }
+
+    public int? CantB { get; set; }
+
+    public int? CantBn { get; set; }
+
+    public virtual EstadoUsulibro? IdEstadoBusNavigation { get; set; }
+
+    public virtual Libro? IdLibroNavigation { get; set; }
+}

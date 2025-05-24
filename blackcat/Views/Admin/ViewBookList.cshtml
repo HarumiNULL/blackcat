@@ -1,0 +1,84 @@
+﻿@model List<blackcat.Models.viewModels.LibrosViewModel>
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+  <h2 class="fw-bold mb-4">Lista de Libros</h2>
+  <div class="card p-3 shadow-sm">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Libro(EPUB)</th>
+        <th>Opciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      @foreach (var libro in Model)
+      {
+        <tr>
+          <td>@libro.NombreL</td>
+          <td>@libro.Archivo</td>
+          <td>
+            <div class="dropdown">
+              <button class="btn-sm bg-secondary-custom  text-dark  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Opciones
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <a class="dropdown-item" asp-controller="Admin" asp-action="ViewEditBook" asp-route-id="@libro.IdL">Editar</a>
+                </li>
+                <li>
+                  <form asp-controller="Admin" asp-action="EliminarLibro" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro que deseas eliminar este libro?');">
+                    <input type="hidden" name="id" value="@libro.IdL" />
+                    <button type="submit" class="dropdown-item" style="background:none;border:none;padding:0;margin:0;">Eliminar</button>
+                  </form>
+                </li>
+              </ul>
+              
+            </div>
+          </td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    @if (ViewBag.Pager.CurrentPage > 1)
+    {
+      <li class="page-item">
+        <a class="page-link"
+           href="@Url.Action("ViewBookList", new { pg = ViewBag.Pager.CurrentPage - 1 })">Anterior</a>
+      </li>
+    }
+
+    @for (int i = ViewBag.Pager.StartPage; i <= ViewBag.Pager.EndPage; i++)
+    {
+      if (i == ViewBag.Pager.CurrentPage)
+      {
+        <li class="page-item active">
+          <span class="page-link">@i</span>
+        </li>
+      }
+      else
+      {
+        <li class="page-item">
+          <a class="page-link" href="@Url.Action("ViewBookList", new { pg = i })">@i</a>
+        </li>
+      }
+    }
+
+    @if (ViewBag.Pager.CurrentPage < ViewBag.Pager.TotalPages)
+    {
+      <li class="page-item">
+        <a class="page-link"
+           href="@Url.Action("ViewBookList", new { pg = ViewBag.Pager.CurrentPage + 1 })">Siguiente</a>
+      </li>
+    }
+  </ul>
+</nav>

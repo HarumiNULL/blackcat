@@ -1,0 +1,27 @@
+@model IFormFile
+@{
+    ViewBag.Title = "Crear Anuncio";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Subir Anuncio</h2>
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-success">@ViewBag.Mensaje</div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form asp-action="CreateAdsMod" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Seleccionar Imagen del Anuncio</label>
+            <input type="file" name="ImagenForm" class="form-control" accept="image/*" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar a Revisión</button>
+    </form>
+</div>
