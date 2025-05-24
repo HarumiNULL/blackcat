@@ -24,31 +24,31 @@
                     <form method="post" asp-controller="Admin" asp-action="ViewEditBook" enctype="multipart/form-data">
                         <div class="mb-3">
                             <input type="hidden" asp-for="IdL" />
-                            <label asp-for="NombreL" class="form-label"></label>
+                            <label asp-for="NombreL" class="form-label">Nombre de Libro</label>
                             <input asp-for="NombreL" class="form-control" placeholder="Ingrese nombre" required/>
                             <span asp-validation-for="NombreL" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Autor" class="form-label"></label>
+                            <label asp-for="Autor" class="form-label">Autor</label>
                             <input asp-for="Autor" class="form-control" placeholder="Ingrese el nombre del autor" required />
                             <span asp-validation-for="Autor" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ArchivoForm" class="form-label"></label>
+                            <label asp-for="ArchivoForm" class="form-label">Archivo</label>
                             <input asp-for="ArchivoForm" class="form-control" accept=".pdf,.epub" required />
                             <span asp-validation-for="ArchivoForm" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Descripcion" class="form-label"></label>
+                            <label asp-for="Descripcion" class="form-label">Descripción</label>
                             <input asp-for="Descripcion" class="form-control" placeholder="Ingrese la descripcion" required />
                             <span asp-validation-for="Descripcion" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ImagenForm" class="form-label"></label>
+                            <label asp-for="ImagenForm" class="form-label">Imagen</label>
                             <input asp-for="ImagenForm" class="form-control"  accept="image/*" required />
                             <span asp-validation-for="ImagenForm" class="text-danger"></span>
                         </div>
