@@ -1,12 +1,13 @@
 @using Microsoft.AspNetCore.Http
 @model List<blackcat.Models.viewModels.LibrosViewModel>
-@using blackcat.Models 
+ 
 
 
 @{
     
     ViewData["Title"] = "Pagina Principal";
     var nombreUsuario = Context.Session.GetString("NombreU");
+    Layout = "_Layout";
 }
 
 <div class="text-center">

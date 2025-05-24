@@ -72,7 +72,7 @@ namespace blackcat.Controllers
 
             if (user == null)
             {
-                TempData["ToastMessage"] = "Correo o contraseña incorrectos.";
+                TempData["ToastMessage"] = "Usuario o contraseña incorrectos.";
                 TempData["ToastType"] = "error";
                 return View();
             }

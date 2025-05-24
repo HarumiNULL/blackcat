@@ -300,6 +300,11 @@ public class AdminController : Controller
         await _adminServices.AprobarAnuncioAsync(id);
         return RedirectToAction("ApproveAdsAdmin");
     }
+    public async Task<IActionResult> DenyAdsMod(int id)
+    {
+        await _modServices.RechazarReglaAsync(id);
+        return RedirectToAction("ApproveAdsAdmin");
+    }
 
     [HttpPost]
     public async Task<IActionResult> DeleteAdsMod(int id)

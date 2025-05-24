@@ -34,7 +34,7 @@
                     <input type="hidden" name="id" value="@anuncio.IdInfo" />
                     <button type="submit" class="btn btn-success">✔️ Aprobar</button>
                 </form>
-                <form asp-action="DeleteAdsMod" asp-controller="Admin" method="post" style="display:inline; margin-left: 5px;">
+                <form asp-action="DenyAdsMod" asp-controller="Admin" method="post" style="display:inline; margin-left: 5px;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="id" value="@anuncio.IdInfo" />
                     <button type="submit" class="btn btn-danger">❌ Rechazar</button>
