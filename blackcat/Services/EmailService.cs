@@ -24,7 +24,7 @@ public class EmailService
     public async Task EnviarCorreoRecuperacion(string email, string name, string activationToken)
     {
         // Construye la URL completa con el token
-        string urlRecuperacion = $"https://48b3-161-10-220-85.ngrok-free.app/User/RecuperarContrasena?token={activationToken}";
+        string urlRecuperacion = $"https://blackcat-dnc7cye0hagabucb.eastus2-01.azurewebsites.net/User/RecuperarContrasena?token={activationToken}";
 
         // Usa $ para string interpolation y @ para verbatim string (evita escapar comillas)
         string body = $@"<!DOCTYPE html>
@@ -77,7 +77,7 @@ public class EmailService
                 <div class=""footer"">
                     <p>Atentamente,</p>
                     <p>El equipo de soporte</p>
-                    <img src=""https://localhost:5050/staticFiles/images/logo.png"" alt=""Logo"" style=""max-width: 200px; display: block; margin-bottom: 20px;"" />
+                    <img src=""https://blackcat-dnc7cye0hagabucb.eastus2-01.azurewebsites.net/staticFiles/correo/logo.png"" alt=""Logo"" style=""max-width: 200px; display: block; margin-bottom: 20px;"" />
 
                 </div>
             </div>
